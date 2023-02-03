@@ -6,7 +6,7 @@ export default function NewPost() {
   return (
     <div className={styles.centerpane}>
       <Banner />
-      // TODO: add a form to write a new post
+      {/* TODO: add a form to write a new post */}
     </div>
   );
 }
