@@ -1,5 +1,13 @@
 const AWS = require("aws-sdk");
 
+const is_dev = process.env.NODE_ENV !== "production";
+
+if (is_dev) {
+  // get the credentials from the local aws config file
+  const config = require("./../../aws.config.js");
+  AWS.config.update(config.aws_remote_config);
+}
+
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
 const tableName = "cs351-project-posts";
