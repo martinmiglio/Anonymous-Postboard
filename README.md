@@ -19,6 +19,6 @@ The post board is composed of the following components:
 
   - This is a chat application that uses API Gateway and Lambda functions. It is a good example of how to use API Gateway and Lambda functions together.
 
-- [ReactJS App on S3](https://www.cloudthat.com/resources/blog/step-by-step-guide-to-deploy-reactjs-app-on-aws-s3)
+- [NextJS App on S3](https://selectfrom.dev/connecting-aws-s3-buckets-to-next-js-25e903621c70)
 
-  - This is a guide on how to host a ReactJS application on S3. It is a good example of how to host a web application on S3.
+  - This is a tutorial on how to host a NextJS application on S3.
