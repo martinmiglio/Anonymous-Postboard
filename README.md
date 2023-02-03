@@ -1,6 +1,6 @@
 # Serverless, Anonymous Post Board
 
-This is a serverless, anonymous post board. It is built with [AWS Lambda](https://aws.amazon.com/lambda/), [Amazon API Gateway](https://aws.amazon.com/api-gateway/), [Amazon DynamoDB](https://aws.amazon.com/dynamodb/), and [NextJS](https://nextjs.org/) on [GitHub Pages](https://pages.github.com/).
+This is a serverless, anonymous post board. It is built with [AWS Lambda](https://aws.amazon.com/lambda/), [Amazon API Gateway](https://aws.amazon.com/api-gateway/), [Amazon DynamoDB](https://aws.amazon.com/dynamodb/), and [NextJS](https://nextjs.org/) on [Vercel](https://vercel.com).
 
 The post board is a simple web application that allows users to post messages to a board. The messages are stored in a DynamoDB table. The web application is hosted on GitHub Pages and uses API Gateway to call the Lambda functions.
 
@@ -15,8 +15,8 @@ The post board is composed of the following components:
   - **API Gateway**: API Gateway is used to create the HTTP API for the post board. It is used to call the Lambda functions and to serve the web application. HTTP API is used instead of REST API because it is cheaper and traffic will be low.
 
 - Web Application
-  - **Github Pages**: Github Pages is used to host the web application. This is a static, hosted website.
-  - **NextJS**: NextJS is used to create the web application to interact with the API Gateway. It is used to create the static website that is hosted on Github Pages.
+  - **Vercel**: Vercel is used to host the web application.
+  - **NextJS**: NextJS is used to create the web application to interact with the API Gateway.
 
 ## Resources
 
