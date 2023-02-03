@@ -1,6 +1,6 @@
 # Serverless, Anonymous Post Board
 
-This is a serverless, anonymous post board. It is built with [AWS Lambda](https://aws.amazon.com/lambda/), [Amazon API Gateway](https://aws.amazon.com/api-gateway/), [Amazon DynamoDB](https://aws.amazon.com/dynamodb/), and [Amazon S3](https://aws.amazon.com/s3/).
+This is a serverless, anonymous post board. It is built with [AWS Lambda](https://aws.amazon.com/lambda/), [Amazon API Gateway](https://aws.amazon.com/api-gateway/), [Amazon DynamoDB](https://aws.amazon.com/dynamodb/), and [NextJS](https://nextjs.org/) on [Amazon S3](https://aws.amazon.com/s3/).
 
 The post board is a simple web application that allows users to post messages to a board. The messages are stored in a DynamoDB table. The web application is hosted on S3 and uses API Gateway to call the Lambda functions.
 
