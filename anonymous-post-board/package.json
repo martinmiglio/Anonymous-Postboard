@@ -1,7 +1,7 @@
 {
   "name": "anonymous-post-board",
   "version": "0.1.0",
-  "private": true,
+  "homepage": "https://martinmiglio.dev/anon-post-board",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
