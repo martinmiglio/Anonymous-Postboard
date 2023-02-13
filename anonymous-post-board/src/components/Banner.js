@@ -46,7 +46,7 @@ const Banner = ({ onRefresh, onNewPost }) => {
               padding: "8px",
             }}
           >
-            <FontAwesomeIcon icon={faPlusCircle} />
+            <FontAwesomeIcon icon={faPlusCircle} style={{ color: "white" }} />
           </button>
         ) : null}
         {onRefresh ? (
@@ -62,9 +62,9 @@ const Banner = ({ onRefresh, onNewPost }) => {
             }}
           >
             {loading ? (
-              <FontAwesomeIcon icon={faSync} spin />
+              <FontAwesomeIcon icon={faSync} style={{ color: "white" }} spin />
             ) : (
-              <FontAwesomeIcon icon={faSync} />
+              <FontAwesomeIcon icon={faSync} style={{ color: "white" }} />
             )}
           </button>
         ) : null}
