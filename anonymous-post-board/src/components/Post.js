@@ -25,9 +25,10 @@ function Post({ post }) {
         borderWidth: "1px",
         borderColor: "white",
         padding: "10px",
-        margin: "10px",
+        margin: "10px 5px 10px 5px",
         borderRadius: "10px",
-        width: "100%",
+        width: "calc(100vw - 20px)",
+        maxWidth: "600px",
       }}
     >
       <div style={{ display: "flex", flexDirection: "row" }}>
