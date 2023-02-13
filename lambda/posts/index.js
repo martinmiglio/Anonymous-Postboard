@@ -11,6 +11,8 @@ export const handler = async (event, context) => {
       return handleGet(event, context);
     case "PUT":
       return handlePut(event, context);
+    case "PATCH":
+      return handlePatch(event, context);
     case "DELETE":
       return handleDelete(event, context);
     default:
@@ -98,6 +100,56 @@ async function handlePut(event, context) {
     return {
       statusCode: 512,
       body: JSON.stringify(error, Object.getOwnPropertyNames(error)),
+    };
+  }
+}
+
+async function handlePatch(event, context) {
+  const { body, queryStringParameters } = event;
+
+  if (queryStringParameters && queryStringParameters.id) {
+    const { id } = queryStringParameters;
+    const requestJSON = JSON.parse(body);
+
+    const attributeValues = {};
+    let updateExpression = "set";
+
+    // Build the update expression and attribute values based on the JSON body
+    // this will ensure that only the provided fields are updated
+    if (requestJSON.hasOwnProperty("content")) {
+      updateExpression += " content = :c,";
+      attributeValues[":c"] = requestJSON.content;
+    }
+    if (requestJSON.hasOwnProperty("timestamp")) {
+      updateExpression += " timestamp = :t,";
+      attributeValues[":t"] = requestJSON.timestamp;
+    }
+    if (requestJSON.hasOwnProperty("votes")) {
+      updateExpression += " votes = :v,";
+      attributeValues[":v"] = requestJSON.votes;
+    }
+
+    // Remove the trailing comma from the update expression
+    updateExpression = updateExpression.slice(0, -1);
+
+    const result = await dynamo
+      .update({
+        TableName: tableName,
+        Key: { id },
+        UpdateExpression: updateExpression,
+        ExpressionAttributeValues: attributeValues,
+        ReturnValues: "ALL_NEW",
+      })
+      .promise();
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify(result.Attributes),
+    };
+  } else {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ error: "Missing post ID" }),
     };
   }
 }
