@@ -48,7 +48,7 @@ async function handleGet(event, context) {
     return {
       statusCode: 200,
       body: JSON.stringify(
-        items.slice(0, Number(queryStringParameters.count) ?? DEFAULT_COUNT)
+        items.slice(0, Number(queryStringParameters.count ?? DEFAULT_COUNT))
       ),
     };
   } else if (queryStringParameters && queryStringParameters.after) {
@@ -82,7 +82,7 @@ async function handleGet(event, context) {
       body: JSON.stringify(
         items.slice(
           startIndex,
-          startIndex + (Number(queryStringParameters.count) ?? DEFAULT_COUNT)
+          startIndex + Number(queryStringParameters.count ?? DEFAULT_COUNT)
         )
       ),
     };
