@@ -67,6 +67,18 @@ async function handleGet(event, context) {
         body: JSON.stringify(items.slice(0, queryStringParameters.count ?? 1)),
       };
     }
+  } else if (queryStringParameters && queryStringParameters.id) {
+    // If an ID is specified, return the item with that ID
+    const result = await dynamo
+      .get({
+        TableName: tableName,
+        Key: { id: Number(queryStringParameters.id) },
+      })
+      .promise();
+    return {
+      statusCode: 200,
+      body: JSON.stringify(result.Item),
+    };
   } else {
     const result = await dynamo.scan({ TableName: tableName }).promise();
     return {
