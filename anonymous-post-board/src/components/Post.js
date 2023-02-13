@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+
+import { formatDistanceToNow } from "date-fns";
+
 import Vote from "./Vote";
 import ReplyList from "./ReplyList";
 
@@ -24,12 +27,18 @@ function Post({ post }) {
         padding: "10px",
         margin: "10px",
         borderRadius: "10px",
+        width: "100%",
       }}
     >
       <div style={{ display: "flex", flexDirection: "row" }}>
         <div style={{ flexGrow: "1" }}>
           <p style={{ overflowWrap: "break-word" }}>{post.content}</p>
-          <p style={{ fontSize: "10px" }}>By Anonymous User</p>
+          <p style={{ fontSize: "10px" }}>By Anonymous User </p>
+          <p style={{ fontSize: "10px", opacity: "0.4" }}>
+            {formatDistanceToNow(post.timestamp ?? new Date(), {
+              addSuffix: true,
+            })}
+          </p>
         </div>
         <Vote
           votes={votes}
@@ -37,7 +46,7 @@ function Post({ post }) {
           onDownvote={handleDownvote}
         />
       </div>
-      <ReplyList replies={replies} />
+      <ReplyList replies={replies ?? []} />
     </div>
   );
 }
