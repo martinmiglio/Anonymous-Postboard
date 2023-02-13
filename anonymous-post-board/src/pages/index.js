@@ -6,6 +6,7 @@ import { getLatestPosts, fetchMorePosts } from "@/api/posts.js";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
+  const [hasMorePosts, setHasMorePosts] = useState(true);
 
   useEffect(() => {
     fetchData();
@@ -23,17 +24,25 @@ export default function Home() {
   };
 
   async function loadMorePosts() {
-    if(posts.length === 0) return; // if there are no posts, don't try to load more posts (this will happen on the first load
+    if (posts.length === 0) return; // if there are no posts, don't try to load more posts (this will happen on the first load
     const lastPostId = posts[posts.length - 1].id; // get the ID of the last post displayed
     const nextPosts = await fetchMorePosts(lastPostId); // make an API request to fetch the next set of posts
-    setPosts([...posts, ...nextPosts]); // add the next set of posts to the existing posts array using state
+    if (nextPosts.length === 0) {
+      setHasMorePosts(false); // if there are no more posts, set the hasMorePosts state to false
+    } else {
+      setPosts([...posts, ...nextPosts]); // add the next set of posts to the existing posts array using state
+    }
   }
 
   return (
     <div className={styles.centerpane}>
       <Banner onRefresh={fetchData} onNewPost={onNewPost} />
       <div className={styles.content}>
-        <PostList posts={posts} loadMorePosts={loadMorePosts} />
+        <PostList
+          posts={posts}
+          loadMorePosts={loadMorePosts}
+          hasMorePosts={hasMorePosts}
+        />
       </div>
     </div>
   );

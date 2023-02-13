@@ -3,14 +3,13 @@ import InfiniteScroll from "react-infinite-scroller";
 
 import Post from "./Post";
 
-function PostList({ posts, loadMorePosts }) {
-  console.log(posts);
+function PostList({ posts, loadMorePosts, hasMorePosts }) {
   return (
-    <div style={{ width: "300px" }}>
+    <div>
       <InfiniteScroll
         pageStart={0}
         loadMore={loadMorePosts}
-        hasMore={true}
+        hasMore={hasMorePosts}
         loader={
           <div style={{ textAlign: "center" }} key={0}>
             Loading ...
