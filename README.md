@@ -12,7 +12,7 @@ The post board is composed of the following components:
 
   - **DynamoDB table**: The DynamoDB table is used to store the posts and replies. The table is partitioned by the post ID. The table is also configured to automatically delete posts after 30 days.
   - **Lambda functions**: Lambda functions are used to create, read, update, and delete posts. The Lambda functions are called by the API Gateway.
-  - **API Gateway**: API Gateway is used to create the HTTP API for the post board. It is used to call the Lambda functions and to serve the web application. HTTP API is used instead of REST API because it is cheaper and traffic will be low.
+  - **API Gateway**: API Gateway is used to create the HTTP API for the post board. It is used to call the Lambda functions and to serve the web application. HTTP API is used instead of REST API because it is cheaper and traffic will be low. This API Gateway is configured to use a custom domain name: [api.postboard.martinmiglio.dev](https://api.postboard.martinmiglio.dev). This domain is configured to use TLS with RSA 2048-bit key to allow for in-flight data to be encrypted. The AWS API Gateway with a custom domain also provides load balancing with minimal configuration.
 
 - Web Application
   - **Vercel**: Vercel is used to host the web application.
