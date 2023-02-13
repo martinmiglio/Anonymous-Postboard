@@ -6,7 +6,7 @@ import Post from "./Post";
 function PostList({ posts, loadMorePosts }) {
   console.log(posts);
   return (
-    <div>
+    <div style={{ width: "300px" }}>
       <InfiniteScroll
         pageStart={0}
         loadMore={loadMorePosts}
@@ -16,7 +16,6 @@ function PostList({ posts, loadMorePosts }) {
             Loading ...
           </div>
         }
-        useWindow={false}
       >
         {posts.map((post) => (
           <Post key={post.id} post={post} />
