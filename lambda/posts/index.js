@@ -35,45 +35,57 @@ export const handler = async (event, context) => {
 
 async function handleGet(event, context) {
   const { queryStringParameters } = event;
-  if (queryStringParameters && queryStringParameters.latest === "true") {
+  const DEFAULT_COUNT = 1;
+
+  if (queryStringParameters && queryStringParameters.latest) {
+    // If the latest parameter is specified, return the latest items
     const result = await dynamo.scan({ TableName: tableName }).promise();
     const items = result.Items;
     // Sort the items based on the timestamp, most recent first
     items.sort((a, b) => {
       return b.timestamp - a.timestamp;
     });
-    if (queryStringParameters.id) {
-      // If an ID is specified, start return from the next item until item count
-      const idIndex = items.findIndex(
-        (item) => item.id === Number(queryStringParameters.id)
-      );
+    return {
+      statusCode: 200,
+      body: JSON.stringify(
+        items.slice(0, Number(queryStringParameters.count) ?? DEFAULT_COUNT)
+      ),
+    };
+  } else if (queryStringParameters && queryStringParameters.after) {
+    // If an ID is specified, return the items after that ID
+    const result = await dynamo.scan({ TableName: tableName }).promise();
+    const items = result.Items;
+    // Sort the items based on the timestamp, most recent first
+    items.sort((a, b) => {
+      return b.timestamp - a.timestamp;
+    });
+    // If an ID is specified, start return from the next item until item count
+    const idIndex = items.findIndex(
+      (item) => item.id === Number(queryStringParameters.after)
+    );
 
-      if (idIndex === -1) {
-        return {
-          statusCode: 513,
-          body: JSON.stringify({
-            error: `No item found by id ${queryStringParameters.id}`,
-          }),
-        };
-      }
-
-      const startIndex = idIndex + 1;
-
+    if (idIndex === -1) {
+      // If the ID is not found, return an error
       return {
-        statusCode: 200,
-        body: JSON.stringify(
-          items.slice(
-            startIndex,
-            startIndex + (queryStringParameters.count ?? 1)
-          )
-        ),
-      };
-    } else {
-      return {
-        statusCode: 200,
-        body: JSON.stringify(items.slice(0, queryStringParameters.count ?? 1)),
+        statusCode: 513,
+        body: JSON.stringify({
+          error: `No item found by id ${queryStringParameters.after}`,
+        }),
       };
     }
+
+    // Start from the next item
+    const startIndex = idIndex + 1;
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify(
+        items.slice(
+          startIndex,
+          startIndex + (Number(queryStringParameters.count) ?? DEFAULT_COUNT)
+        )
+      ),
+    };
   } else if (queryStringParameters && queryStringParameters.id) {
     // If an ID is specified, return the item with that ID
     const result = await dynamo
@@ -87,15 +99,22 @@ async function handleGet(event, context) {
       body: JSON.stringify(result.Item),
     };
   } else {
+    // Otherwise, return all items
     const result = await dynamo.scan({ TableName: tableName }).promise();
+    const items = result.Items;
+    // Sort the items based on the timestamp, most recent first
+    items.sort((a, b) => {
+      return b.timestamp - a.timestamp;
+    });
     return {
       statusCode: 200,
-      body: JSON.stringify(result.Items),
+      body: JSON.stringify(items),
     };
   }
 }
 
 async function handlePut(event, context) {
+  // Create a new post
   const { body } = event;
   const requestJSON = JSON.parse(body);
   const now = Date.now();
@@ -125,6 +144,7 @@ async function handlePut(event, context) {
 }
 
 async function handlePatch(event, context) {
+  // Update an existing post
   const { body, queryStringParameters } = event;
 
   if (queryStringParameters && queryStringParameters.id) {
@@ -173,6 +193,7 @@ async function handlePatch(event, context) {
 }
 
 async function handleDelete(event, context) {
+  // Delete an existing post
   const { queryStringParameters } = event;
   if (queryStringParameters && queryStringParameters.id) {
     await dynamo
