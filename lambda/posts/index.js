@@ -5,22 +5,31 @@ const dynamo = new AWS.DynamoDB.DocumentClient();
 const tableName = "cs351-project-posts";
 
 export const handler = async (event, context) => {
-  const httpMethod = event.httpMethod;
-  switch (httpMethod) {
-    case "GET":
-      return handleGet(event, context);
-    case "PUT":
-      return handlePut(event, context);
-    case "DELETE":
-      return handleDelete(event, context);
-    default:
-      return {
-        statusCode: 400,
-        body: JSON.stringify({
-          error: `Unsupported method ${httpMethod}`,
-          event: event,
-        }),
-      };
+  try {
+    const httpMethod = event.httpMethod;
+    switch (httpMethod) {
+      case "GET":
+        return handleGet(event, context);
+      case "PUT":
+        return handlePut(event, context);
+      case "PATCH":
+        return handlePatch(event, context);
+      case "DELETE":
+        return handleDelete(event, context);
+      default:
+        return {
+          statusCode: 400,
+          body: JSON.stringify({
+            error: `Unsupported method ${httpMethod}`,
+            event: event,
+          }),
+        };
+    }
+  } catch (error) {
+    return {
+      statusCode: 512,
+      body: JSON.stringify(error, Object.getOwnPropertyNames(error)),
+    };
   }
 };
 
@@ -65,6 +74,18 @@ async function handleGet(event, context) {
         body: JSON.stringify(items.slice(0, queryStringParameters.count ?? 1)),
       };
     }
+  } else if (queryStringParameters && queryStringParameters.id) {
+    // If an ID is specified, return the item with that ID
+    const result = await dynamo
+      .get({
+        TableName: tableName,
+        Key: { id: Number(queryStringParameters.id) },
+      })
+      .promise();
+    return {
+      statusCode: 200,
+      body: JSON.stringify(result.Item),
+    };
   } else {
     const result = await dynamo.scan({ TableName: tableName }).promise();
     return {
@@ -75,29 +96,70 @@ async function handleGet(event, context) {
 }
 
 async function handlePut(event, context) {
-  try {
-    const { body } = event;
+  const { body } = event;
+  const requestJSON = JSON.parse(body);
+  const post = await dynamo
+    .put({
+      TableName: tableName,
+      Item: {
+        // id should be generated to avoid collisions
+        id: Date.now(),
+        content: requestJSON.content ?? "",
+        timestamp: requestJSON.timestamp ?? Date.now(), // default to current time if not provided
+        votes: requestJSON.votes ?? 0, // default to 0 if not provided
+      },
+    })
+    .promise();
+  return {
+    statusCode: 200,
+    body: JSON.stringify(post),
+  };
+}
+
+async function handlePatch(event, context) {
+  const { body, queryStringParameters } = event;
+
+  if (queryStringParameters && queryStringParameters.id) {
     const requestJSON = JSON.parse(body);
-    const post = await dynamo
-      .put({
+
+    const attributeValues = {};
+    let updateExpression = "set";
+
+    // Build the update expression and attribute values based on the JSON body
+    // this will ensure that only the provided fields are updated
+    if (requestJSON.hasOwnProperty("content")) {
+      updateExpression += " content = :c,";
+      attributeValues[":c"] = requestJSON.content;
+    }
+    if (requestJSON.hasOwnProperty("timestamp")) {
+      updateExpression += " timestamp = :t,";
+      attributeValues[":t"] = requestJSON.timestamp;
+    }
+    if (requestJSON.hasOwnProperty("votes")) {
+      updateExpression += " votes = :v,";
+      attributeValues[":v"] = requestJSON.votes;
+    }
+
+    // Remove the trailing comma from the update expression
+    updateExpression = updateExpression.slice(0, -1);
+
+    const result = await dynamo
+      .update({
         TableName: tableName,
-        Item: {
-          // id should be generated to avoid collisions
-          id: Date.now(),
-          content: requestJSON.content ?? "",
-          timestamp: requestJSON.timestamp ?? Date.now(), // default to current time if not provided
-          votes: requestJSON.votes ?? 0, // default to 0 if not provided
-        },
+        Key: { id: Number(queryStringParameters.id) },
+        UpdateExpression: updateExpression,
+        ExpressionAttributeValues: attributeValues,
+        ReturnValues: "ALL_NEW",
       })
       .promise();
     return {
       statusCode: 200,
-      body: JSON.stringify(post),
+      body: JSON.stringify(result.Attributes),
     };
-  } catch (error) {
+  } else {
     return {
-      statusCode: 512,
-      body: JSON.stringify(error, Object.getOwnPropertyNames(error)),
+      statusCode: 400,
+      body: JSON.stringify({ error: "Missing post ID" }),
     };
   }
 }
@@ -105,11 +167,10 @@ async function handlePut(event, context) {
 async function handleDelete(event, context) {
   const { queryStringParameters } = event;
   if (queryStringParameters && queryStringParameters.id) {
-    const { id } = queryStringParameters;
     await dynamo
       .delete({
         TableName: tableName,
-        Key: { id },
+        Key: { id: Number(queryStringParameters.id) },
       })
       .promise();
     return {
