@@ -112,10 +112,12 @@ async function handlePut(event, context) {
     })
     .promise();
   // Return the newly created post
-  const result = await dynamo.get({
-    TableName: tableName,
-    Key: { id: now },
-  });
+  const result = await dynamo
+    .get({
+      TableName: tableName,
+      Key: { id: now },
+    })
+    .promise();
   return {
     statusCode: 200,
     body: JSON.stringify(result.Item),
