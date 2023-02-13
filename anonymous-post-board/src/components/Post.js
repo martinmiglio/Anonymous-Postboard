@@ -24,6 +24,7 @@ function Post({ post }) {
         padding: "10px",
         margin: "10px",
         borderRadius: "10px",
+        width: "100%",
       }}
     >
       <div style={{ display: "flex", flexDirection: "row" }}>
@@ -37,7 +38,7 @@ function Post({ post }) {
           onDownvote={handleDownvote}
         />
       </div>
-      <ReplyList replies={replies} />
+      <ReplyList replies={replies ?? []} />
     </div>
   );
 }
