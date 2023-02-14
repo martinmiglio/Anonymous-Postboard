@@ -14,9 +14,9 @@ export async function getLatestPosts() {
   return response.data;
 }
 
-export async function fetchMorePosts(after) {
-  // fetch the next set of posts after the specified ID
-  const response = await axios.get(`${API_URL}/posts?after=${after}&count=5`);
+export async function fetchMorePosts(before) {
+  // fetch the next set of posts before the specified ID
+  const response = await axios.get(`${API_URL}/posts?before=${before}&count=5`);
   console.log(`fetched ${response.data.length} more posts`);
   return response.data;
 }

@@ -53,8 +53,8 @@ async function handleGet(event, context) {
         items.slice(0, Number(queryStringParameters.count ?? DEFAULT_COUNT))
       ),
     };
-  } else if (queryStringParameters && queryStringParameters.after) {
-    // If an ID is specified, return the items after that ID
+  } else if (queryStringParameters && queryStringParameters.before) {
+    // If an ID is specified, return the items before that ID
     const result = await dynamo.scan({ TableName: tableName }).promise();
     const items = result.Items;
     // Sort the items based on the timestamp, most recent first
@@ -63,7 +63,7 @@ async function handleGet(event, context) {
     });
     // If an ID is specified, start return from the next item until item count
     const idIndex = items.findIndex(
-      (item) => item.id === Number(queryStringParameters.after)
+      (item) => item.id === Number(queryStringParameters.before)
     );
 
     if (idIndex === -1) {
@@ -71,7 +71,7 @@ async function handleGet(event, context) {
       return {
         statusCode: 513,
         body: JSON.stringify({
-          error: `No item found by id ${queryStringParameters.after}`,
+          error: `No item found by id ${queryStringParameters.before}`,
         }),
       };
     }
