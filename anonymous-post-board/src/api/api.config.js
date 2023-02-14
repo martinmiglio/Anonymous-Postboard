@@ -1,1 +1,1 @@
-export const API_URL = "https://api.postboard.martinmiglio.dev/";
+export const API_URL = "https://api.postboard.martinmiglio.dev";
