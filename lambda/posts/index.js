@@ -16,6 +16,8 @@ export const handler = async (event, context) => {
         return handlePatch(event, context);
       case "DELETE":
         return handleDelete(event, context);
+      case "OPTIONS":
+        return handleOptions(event, context);
       default:
         return {
           statusCode: 400,
@@ -212,4 +214,16 @@ async function handleDelete(event, context) {
       body: JSON.stringify({ error: "Missing post ID" }),
     };
   }
+}
+
+async function handleOptions(event, context) {
+  // Return the allowed methods for CORS
+  return {
+    statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,PUT,PATCH,DELETE,OPTIONS",
+    },
+    body: JSON.stringify({ success: true }),
+  };
 }
