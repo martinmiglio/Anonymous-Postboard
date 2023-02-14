@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import styles from "@/styles/Home.module.css";
 import PostList from "@/components/PostList.js";
 import Banner from "@/components/Banner.js";
+import NewPostModal from "@/components/NewPostModal.js";
 import { getLatestPosts, fetchMorePosts } from "@/api/posts.js";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
   const [hasMorePosts, setHasMorePosts] = useState(true);
+  const [showNewPostModal, setShowNewPostModal] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -18,9 +20,11 @@ export default function Home() {
   }
 
   const onNewPost = () => {
-    console.log("new post");
-    // forwards to the new post page
-    location.href = "new_post";
+    setShowNewPostModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowNewPostModal(false);
   };
 
   async function loadMorePosts() {
@@ -37,7 +41,11 @@ export default function Home() {
   return (
     <div className={styles.centerpane}>
       <Banner onRefresh={fetchData} onNewPost={onNewPost} />
-      <div className={styles.content}>
+      <NewPostModal isOpen={showNewPostModal} onClose={handleCloseModal} />
+      <div
+        className={styles.content}
+        style={{ filter: showNewPostModal ? "blur(5px)" : null }}
+      >
         <PostList
           posts={posts}
           loadMorePosts={loadMorePosts}

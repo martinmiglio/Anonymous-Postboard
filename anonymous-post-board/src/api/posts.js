@@ -14,3 +14,9 @@ export async function fetchMorePosts(after) {
   console.log(`fetched ${response.data.length} more posts`);
   return response.data;
 }
+
+export async function makePost(post) {
+  const response = await axios.put(`${API_URL}/posts`, post);
+  console.log(`posted ${response.data.id}`);
+  return response.data;
+}
