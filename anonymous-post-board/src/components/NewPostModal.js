@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { makePost } from "@/api/posts.js";
 
-const NewPostModal = ({ isOpen, onClose }) => {
+const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
   const defaultContent = "What's on your mind?";
 
   const [content, setContent] = useState("");
@@ -19,7 +19,10 @@ const NewPostModal = ({ isOpen, onClose }) => {
       return;
     }
     const post = { content: content };
-    makePost(post);
+    makePost(post).then((post) => {
+      setNewPostID(post.id);
+    });
+
     onClose(); // close the modal after the post is created
     setContent("");
   };

@@ -2,6 +2,12 @@ import axios from "axios";
 
 import { API_URL } from "./api.config.js";
 
+export async function getPostById(id) {
+  const response = await axios.get(`${API_URL}/posts?id=${id}`);
+  console.log(`fetched post ${response.data.id}`);
+  return response.data;
+}
+
 export async function getLatestPosts() {
   const response = await axios.get(`${API_URL}/posts?latest=true`);
   console.log(`fetched ${response.data.length} posts to start`);

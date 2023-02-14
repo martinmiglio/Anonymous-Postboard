@@ -9,10 +9,15 @@ export default function Home() {
   const [posts, setPosts] = useState([]);
   const [hasMorePosts, setHasMorePosts] = useState(true);
   const [showNewPostModal, setShowNewPostModal] = useState(false);
+  const [newPostID, setNewPostID] = useState(-1);
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [newPostID]);
 
   async function fetchData() {
     const latestPosts = await getLatestPosts();
@@ -41,7 +46,11 @@ export default function Home() {
   return (
     <div className={styles.centerpane}>
       <Banner onRefresh={fetchData} onNewPost={onNewPost} />
-      <NewPostModal isOpen={showNewPostModal} onClose={handleCloseModal} />
+      <NewPostModal
+        isOpen={showNewPostModal}
+        onClose={handleCloseModal}
+        setNewPostID={setNewPostID}
+      />
       <div
         className={styles.content}
         style={{ filter: showNewPostModal ? "blur(5px)" : null }}
