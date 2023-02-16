@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSync, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
@@ -12,6 +12,12 @@ const Banner = ({ onRefresh, onNewPost }) => {
 
   const handleNewPost = () => {
     onNewPost();
+  };
+
+  const iconStyle = {
+    color: "white",
+    width: "24px",
+    height: "24px",
   };
 
   return (
@@ -46,7 +52,7 @@ const Banner = ({ onRefresh, onNewPost }) => {
               padding: "8px",
             }}
           >
-            <FontAwesomeIcon icon={faPlusCircle} style={{ color: "white" }} />
+            <FontAwesomeIcon icon={faPlusCircle} style={iconStyle} />
           </button>
         ) : null}
         {onRefresh ? (
@@ -62,9 +68,9 @@ const Banner = ({ onRefresh, onNewPost }) => {
             }}
           >
             {loading ? (
-              <FontAwesomeIcon icon={faSync} style={{ color: "white" }} spin />
+              <FontAwesomeIcon icon={faSync} style={iconStyle} spin />
             ) : (
-              <FontAwesomeIcon icon={faSync} style={{ color: "white" }} />
+              <FontAwesomeIcon icon={faSync} style={iconStyle} />
             )}
           </button>
         ) : null}

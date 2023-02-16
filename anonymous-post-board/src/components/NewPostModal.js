@@ -22,8 +22,12 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
     makePost(post).then((post) => {
       setNewPostID(post.id);
     });
+    onClose();
+    setContent("");
+  };
 
-    onClose(); // close the modal after the post is created
+  const handleClose = () => {
+    onClose();
     setContent("");
   };
 
@@ -33,14 +37,6 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
 
   const handleBlur = () => {
     setFocused(false);
-  };
-
-  const buttonStyle = {
-    backgroundColor: "transparent",
-    border: "none",
-    cursor: "pointer",
-    outline: "none",
-    padding: "8px",
   };
 
   const modalStyle = {
@@ -54,6 +50,9 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
     zIndex: 1000,
     borderRadius: "16px",
     background: "black",
+    borderStyle: "solid",
+    borderWidth: "1px",
+    borderColor: "white",
   };
 
   const textBoxStyle = {
@@ -65,7 +64,23 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
     lineHeight: "24px",
     backgroundColor: "transparent",
     border: "none",
+    fontSize: "1em",
     opacity: content === "" ? "0.5" : "1",
+    color: "white",
+    padding: "5px 0 0",
+  };
+
+  const buttonStyle = {
+    backgroundColor: "transparent",
+    border: "none",
+    cursor: "pointer",
+    outline: "none",
+  };
+
+  const iconStyle = {
+    color: "white",
+    width: "24px",
+    height: "24px",
   };
 
   const show = isOpen ? true : false;
@@ -81,20 +96,15 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
             justifyContent: "space-between",
           }}
         >
-          <label>
-            <input
-              type="text"
-              value={content === "" && !focused ? defaultContent : content}
-              onChange={handleChange}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-              style={textBoxStyle}
-              spellCheck="true"
-            />
-          </label>
-          <div style={{ marginLeft: "auto", marginRight: 0 }}>
-            <button type="button" style={buttonStyle} onClick={onClose}>
-              <FontAwesomeIcon icon={faTimes} style={{ color: "white" }} />
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <button type="button" style={buttonStyle} onClick={handleClose}>
+              <FontAwesomeIcon icon={faTimes} style={iconStyle} />
             </button>
             <button
               type="submit"
@@ -102,9 +112,18 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
               disabled={content === defaultContent}
               onClick={handleSubmit}
             >
-              <FontAwesomeIcon icon={faPaperPlane} style={{ color: "white" }} />
+              <FontAwesomeIcon icon={faPaperPlane} style={iconStyle} />
             </button>
           </div>
+          <textarea
+            value={content === "" && !focused ? defaultContent : content}
+            onChange={handleChange}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            style={textBoxStyle}
+            spellCheck="true"
+            rows="3"
+          />
         </form>
       </div>
     )
