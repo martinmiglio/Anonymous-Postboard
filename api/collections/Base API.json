@@ -1,0 +1,1175 @@
+{
+	"info": {
+		"_postman_id": "83b1b90f-753b-4158-b4ff-cf16bf577bf4",
+		"name": "Base API",
+		"description": "This is an API for the Anonymous Post Board",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "9718733-83b1b90f-753b-4158-b4ff-cf16bf577bf4"
+	},
+	"item": [
+		{
+			"name": "posts",
+			"item": [
+				{
+					"name": "{{baseUrl}}/posts",
+					"id": "2e52eb5b-36c5-42f3-a751-6cd41a21c565",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/posts?before=<integer>&latest=<boolean>&id=<integer>&count=<integer>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts"
+							],
+							"query": [
+								{
+									"key": "before",
+									"value": "<integer>",
+									"description": "ID of the item to return the items before"
+								},
+								{
+									"key": "latest",
+									"value": "<boolean>",
+									"description": "If true, returns the latest items"
+								},
+								{
+									"key": "id",
+									"value": "<integer>",
+									"description": "ID of the item to return"
+								},
+								{
+									"key": "count",
+									"value": "<integer>",
+									"description": "Number of items to return"
+								}
+							]
+						},
+						"description": "Retrieve posts from the DynamoDB table"
+					},
+					"response": [
+						{
+							"id": "9b32ec8b-570f-4880-a539-370b8e5929d0",
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/posts?before=<integer>&latest=<boolean>&id=<integer>&count=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"posts"
+									],
+									"query": [
+										{
+											"key": "before",
+											"value": "<integer>"
+										},
+										{
+											"key": "latest",
+											"value": "<boolean>"
+										},
+										{
+											"key": "id",
+											"value": "<integer>"
+										},
+										{
+											"key": "count",
+											"value": "<integer>"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": \"<integer>\",\n    \"content\": \"<string>\",\n    \"timestamp\": \"<integer>\",\n    \"votes\": \"<integer>\",\n    \"ttl\": \"<integer>\"\n  },\n  {\n    \"id\": \"<integer>\",\n    \"content\": \"<string>\",\n    \"timestamp\": \"<integer>\",\n    \"votes\": \"<integer>\",\n    \"ttl\": \"<integer>\"\n  }\n]"
+						},
+						{
+							"id": "01c337af-829b-4443-9a53-efa62c24b1a3",
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/posts?before=<integer>&latest=<boolean>&id=<integer>&count=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"posts"
+									],
+									"query": [
+										{
+											"key": "before",
+											"value": "<integer>"
+										},
+										{
+											"key": "latest",
+											"value": "<boolean>"
+										},
+										{
+											"key": "id",
+											"value": "<integer>"
+										},
+										{
+											"key": "count",
+											"value": "<integer>"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\"\n}"
+						},
+						{
+							"id": "60aaafc3-edca-4d4f-acf4-0c6f56f7466f",
+							"name": "Invalid ID",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/posts?before=<integer>&latest=<boolean>&id=<integer>&count=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"posts"
+									],
+									"query": [
+										{
+											"key": "before",
+											"value": "<integer>"
+										},
+										{
+											"key": "latest",
+											"value": "<boolean>"
+										},
+										{
+											"key": "id",
+											"value": "<integer>"
+										},
+										{
+											"key": "count",
+											"value": "<integer>"
+										}
+									]
+								}
+							},
+							"code": 513,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "{{baseUrl}}/posts",
+					"id": "a3a34c53-df58-4a94-8bc6-00cba5fa12fe",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"content\": \"<string>\",\n  \"timestamp\": \"<integer>\",\n  \"votes\": \"<integer>\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/posts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts"
+							]
+						},
+						"description": "Create a new post in the DynamoDB table"
+					},
+					"response": [
+						{
+							"id": "b062ec1e-c2ab-467c-9496-99cd99d717c2",
+							"name": "Success",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"content\": \"<string>\",\n  \"timestamp\": \"<integer>\",\n  \"votes\": \"<integer>\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/posts",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"posts"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"<integer>\",\n  \"content\": \"<string>\",\n  \"timestamp\": \"<integer>\",\n  \"votes\": \"<integer>\",\n  \"ttl\": \"<integer>\"\n}"
+						},
+						{
+							"id": "c0b535e1-1da7-4a3f-987f-844d8c76636f",
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"content\": \"<string>\",\n  \"timestamp\": \"<integer>\",\n  \"votes\": \"<integer>\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/posts",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"posts"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "{{baseUrl}}/posts",
+					"id": "b5932834-5278-4e68-83c3-a84ba5d540c3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"content\": \"<string>\",\n  \"timestamp\": \"<integer>\",\n  \"votes\": \"<integer>\",\n  \"ttl\": \"<integer>\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/posts?id=<integer>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "<integer>",
+									"description": "ID of the item to update"
+								}
+							]
+						},
+						"description": "Update an existing post in the DynamoDB table"
+					},
+					"response": [
+						{
+							"id": "e385a922-9d0d-4b95-b856-c5e5f6be2858",
+							"name": "Success",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"content\": \"<string>\",\n  \"timestamp\": \"<integer>\",\n  \"votes\": \"<integer>\",\n  \"ttl\": \"<integer>\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/posts?id=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"posts"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "<integer>"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"<integer>\",\n  \"content\": \"<string>\",\n  \"timestamp\": \"<integer>\",\n  \"votes\": \"<integer>\",\n  \"ttl\": \"<integer>\"\n}"
+						},
+						{
+							"id": "56374de3-bd3b-4d0b-a27d-0e2f79ee121e",
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"content\": \"<string>\",\n  \"timestamp\": \"<integer>\",\n  \"votes\": \"<integer>\",\n  \"ttl\": \"<integer>\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/posts?id=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"posts"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "<integer>"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "{{baseUrl}}/posts",
+					"id": "cec1f3b6-dc5d-4cde-b5be-d7c5ecfbcd19",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/posts?id=<integer>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "<integer>",
+									"description": "ID of the item to delete"
+								}
+							]
+						},
+						"description": "Delete an existing post from the DynamoDB table"
+					},
+					"response": [
+						{
+							"id": "0a6ab9f8-0065-4e08-b41d-8ac3905014fe",
+							"name": "Success",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/posts?id=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"posts"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "<integer>"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"<integer>\",\n  \"content\": \"<string>\",\n  \"timestamp\": \"<integer>\",\n  \"votes\": \"<integer>\",\n  \"ttl\": \"<integer>\"\n}"
+						},
+						{
+							"id": "41a51d33-e78f-4c3c-b8c8-b8f0e077c480",
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/posts?id=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"posts"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "<integer>"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\"\n}"
+						},
+						{
+							"id": "f283122f-935a-4131-8a44-13179a1d950a",
+							"name": "Invalid ID",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/posts?id=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"posts"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "<integer>"
+										}
+									]
+								}
+							},
+							"code": 513,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\"\n}"
+						}
+					]
+				}
+			],
+			"id": "375a8745-43c6-4118-8778-d313fa6507b3"
+		},
+		{
+			"name": "replies",
+			"item": [
+				{
+					"name": "{{baseUrl}}/replies",
+					"id": "402098bd-3a4b-46bb-aa12-9d32d812dc66",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/replies?before=<integer>&latest=<boolean>&id=<integer>&count=<integer>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"replies"
+							],
+							"query": [
+								{
+									"key": "before",
+									"value": "<integer>",
+									"description": "ID of the item to return the items before"
+								},
+								{
+									"key": "latest",
+									"value": "<boolean>",
+									"description": "If true, returns the latest items"
+								},
+								{
+									"key": "id",
+									"value": "<integer>",
+									"description": "ID of the item to return"
+								},
+								{
+									"key": "count",
+									"value": "<integer>",
+									"description": "Number of items to return"
+								}
+							]
+						},
+						"description": "Retrieve replies from the DynamoDB table"
+					},
+					"response": [
+						{
+							"id": "34263f2a-51f6-4847-869a-1acec195bbdf",
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/replies?before=<integer>&latest=<boolean>&id=<integer>&count=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"replies"
+									],
+									"query": [
+										{
+											"key": "before",
+											"value": "<integer>"
+										},
+										{
+											"key": "latest",
+											"value": "<boolean>"
+										},
+										{
+											"key": "id",
+											"value": "<integer>"
+										},
+										{
+											"key": "count",
+											"value": "<integer>"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": \"<integer>\",\n    \"parent_id\": \"<integer>\",\n    \"content\": \"<string>\",\n    \"timestamp\": \"<integer>\",\n    \"votes\": \"<integer>\",\n    \"ttl\": \"<integer>\"\n  },\n  {\n    \"id\": \"<integer>\",\n    \"parent_id\": \"<integer>\",\n    \"content\": \"<string>\",\n    \"timestamp\": \"<integer>\",\n    \"votes\": \"<integer>\",\n    \"ttl\": \"<integer>\"\n  }\n]"
+						},
+						{
+							"id": "e50c2069-4c31-4fbf-9427-0d4829972345",
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/replies?before=<integer>&latest=<boolean>&id=<integer>&count=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"replies"
+									],
+									"query": [
+										{
+											"key": "before",
+											"value": "<integer>"
+										},
+										{
+											"key": "latest",
+											"value": "<boolean>"
+										},
+										{
+											"key": "id",
+											"value": "<integer>"
+										},
+										{
+											"key": "count",
+											"value": "<integer>"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\"\n}"
+						},
+						{
+							"id": "a24889a1-0bef-4182-91e2-1bb0fd4add0d",
+							"name": "Invalid ID",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/replies?before=<integer>&latest=<boolean>&id=<integer>&count=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"replies"
+									],
+									"query": [
+										{
+											"key": "before",
+											"value": "<integer>"
+										},
+										{
+											"key": "latest",
+											"value": "<boolean>"
+										},
+										{
+											"key": "id",
+											"value": "<integer>"
+										},
+										{
+											"key": "count",
+											"value": "<integer>"
+										}
+									]
+								}
+							},
+							"code": 513,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "{{baseUrl}}/replies",
+					"id": "8653b3f3-ba3f-48e3-8196-873406a1978f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"parent_id\": \"<integer>\",\n  \"content\": \"<string>\",\n  \"timestamp\": \"<integer>\",\n  \"votes\": \"<integer>\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/replies",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"replies"
+							]
+						},
+						"description": "Create a new reply in the DynamoDB table"
+					},
+					"response": [
+						{
+							"id": "bebadae9-b998-46fc-bc8a-87658d880881",
+							"name": "Success",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"parent_id\": \"<integer>\",\n  \"content\": \"<string>\",\n  \"timestamp\": \"<integer>\",\n  \"votes\": \"<integer>\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/replies",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"replies"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"<integer>\",\n  \"parent_id\": \"<integer>\",\n  \"content\": \"<string>\",\n  \"timestamp\": \"<integer>\",\n  \"votes\": \"<integer>\",\n  \"ttl\": \"<integer>\"\n}"
+						},
+						{
+							"id": "5b613502-7768-4a2c-a897-e01349ab773f",
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"parent_id\": \"<integer>\",\n  \"content\": \"<string>\",\n  \"timestamp\": \"<integer>\",\n  \"votes\": \"<integer>\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/replies",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"replies"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "{{baseUrl}}/replies",
+					"id": "43e6a644-a23d-4cc3-bea1-6f379f2d337d",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"parent_id\": \"<integer>\",\n  \"content\": \"<string>\",\n  \"timestamp\": \"<integer>\",\n  \"votes\": \"<integer>\",\n  \"ttl\": \"<integer>\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/replies?id=<integer>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"replies"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "<integer>",
+									"description": "ID of the item to update"
+								}
+							]
+						},
+						"description": "Update an existing reply in the DynamoDB table"
+					},
+					"response": [
+						{
+							"id": "1c0fa42a-bdb6-4aa1-9eb7-2bbd6a34a36a",
+							"name": "Success",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"parent_id\": \"<integer>\",\n  \"content\": \"<string>\",\n  \"timestamp\": \"<integer>\",\n  \"votes\": \"<integer>\",\n  \"ttl\": \"<integer>\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/replies?id=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"replies"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "<integer>"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"<integer>\",\n  \"parent_id\": \"<integer>\",\n  \"content\": \"<string>\",\n  \"timestamp\": \"<integer>\",\n  \"votes\": \"<integer>\",\n  \"ttl\": \"<integer>\"\n}"
+						},
+						{
+							"id": "e92ee029-1372-4b41-8f9b-c7e3fd7e23e8",
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"parent_id\": \"<integer>\",\n  \"content\": \"<string>\",\n  \"timestamp\": \"<integer>\",\n  \"votes\": \"<integer>\",\n  \"ttl\": \"<integer>\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/replies?id=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"replies"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "<integer>"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "{{baseUrl}}/replies",
+					"id": "813fdb16-db75-4ccd-96f2-117ec170ccb7",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/replies?id=<integer>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"replies"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "<integer>",
+									"description": "ID of the item to delete"
+								}
+							]
+						},
+						"description": "Delete an existing reply from the DynamoDB table"
+					},
+					"response": [
+						{
+							"id": "203ae8ce-52de-452a-bf4a-de7d4bfa788b",
+							"name": "Success",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/replies?id=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"replies"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "<integer>"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"<integer>\",\n  \"parent_id\": \"<integer>\",\n  \"content\": \"<string>\",\n  \"timestamp\": \"<integer>\",\n  \"votes\": \"<integer>\",\n  \"ttl\": \"<integer>\"\n}"
+						},
+						{
+							"id": "bc5fe876-c220-4325-90b7-d1adbb607ffc",
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/replies?id=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"replies"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "<integer>"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\"\n}"
+						},
+						{
+							"id": "3ebabd9b-62c9-4d72-9089-d6161c6fa8c0",
+							"name": "Invalid ID",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/replies?id=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"replies"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "<integer>"
+										}
+									]
+								}
+							},
+							"code": 513,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\"\n}"
+						}
+					]
+				}
+			],
+			"id": "b315e713-3565-47fa-ba9a-e14cce2074a8"
+		}
+	],
+	"variable": [
+		{
+			"id": "9c9b8788-5eb9-468a-b7d9-c08751497bd9",
+			"key": "baseUrl",
+			"value": "https://api.postboard.martinmiglio.dev",
+			"type": "string"
+		}
+	]
+}
