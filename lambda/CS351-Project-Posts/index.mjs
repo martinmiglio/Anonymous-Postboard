@@ -4,10 +4,13 @@ const dynamo = new AWS.DynamoDB.DocumentClient();
 
 const tableName = "cs351-project-posts";
 
-export const handler = async (event, context) => {
-  try {
+export const handler = async (event, context) =>
+{
+  try
+  {
     const httpMethod = event.httpMethod;
-    switch (httpMethod) {
+    switch (httpMethod)
+    {
       case "GET":
         return handleGet(event, context);
       case "PUT":
@@ -27,7 +30,8 @@ export const handler = async (event, context) => {
           }),
         };
     }
-  } catch (error) {
+  } catch (error)
+  {
     return {
       statusCode: 512,
       body: JSON.stringify(error, Object.getOwnPropertyNames(error)),
@@ -35,16 +39,19 @@ export const handler = async (event, context) => {
   }
 };
 
-async function handleGet(event, context) {
+async function handleGet(event, context)
+{
   const { queryStringParameters } = event;
   const DEFAULT_COUNT = 1;
 
-  if (queryStringParameters && queryStringParameters.latest) {
+  if (queryStringParameters && queryStringParameters.latest)
+  {
     // If the latest parameter is specified, return the latest items
     const result = await dynamo.scan({ TableName: tableName }).promise();
     const items = result.Items;
     // Sort the items based on the timestamp, most recent first
-    items.sort((a, b) => {
+    items.sort((a, b) =>
+    {
       return b.timestamp - a.timestamp;
     });
     return {
@@ -53,12 +60,14 @@ async function handleGet(event, context) {
         items.slice(0, Number(queryStringParameters.count ?? DEFAULT_COUNT))
       ),
     };
-  } else if (queryStringParameters && queryStringParameters.before) {
+  } else if (queryStringParameters && queryStringParameters.before)
+  {
     // If an ID is specified, return the items before that ID
     const result = await dynamo.scan({ TableName: tableName }).promise();
     const items = result.Items;
     // Sort the items based on the timestamp, most recent first
-    items.sort((a, b) => {
+    items.sort((a, b) =>
+    {
       return b.timestamp - a.timestamp;
     });
     // If an ID is specified, start return from the next item until item count
@@ -66,7 +75,8 @@ async function handleGet(event, context) {
       (item) => item.id === Number(queryStringParameters.before)
     );
 
-    if (idIndex === -1) {
+    if (idIndex === -1)
+    {
       // If the ID is not found, return an error
       return {
         statusCode: 513,
@@ -88,7 +98,8 @@ async function handleGet(event, context) {
         )
       ),
     };
-  } else if (queryStringParameters && queryStringParameters.id) {
+  } else if (queryStringParameters && queryStringParameters.id)
+  {
     // If an ID is specified, return the item with that ID
     const result = await dynamo
       .get({
@@ -100,12 +111,14 @@ async function handleGet(event, context) {
       statusCode: 200,
       body: JSON.stringify(result.Item),
     };
-  } else {
+  } else
+  {
     // Otherwise, return all items
     const result = await dynamo.scan({ TableName: tableName }).promise();
     const items = result.Items;
     // Sort the items based on the timestamp, most recent first
-    items.sort((a, b) => {
+    items.sort((a, b) =>
+    {
       return b.timestamp - a.timestamp;
     });
     return {
@@ -146,11 +159,13 @@ async function handlePut(event, context)
   };
 }
 
-async function handlePatch(event, context) {
+async function handlePatch(event, context)
+{
   // Update an existing post
   const { body, queryStringParameters } = event;
 
-  if (queryStringParameters && queryStringParameters.id) {
+  if (queryStringParameters && queryStringParameters.id)
+  {
     const requestJSON = JSON.parse(body);
 
     const attributeValues = {};
@@ -158,15 +173,18 @@ async function handlePatch(event, context) {
 
     // Build the update expression and attribute values based on the JSON body
     // this will ensure that only the provided fields are updated
-    if (requestJSON.hasOwnProperty("content")) {
+    if (requestJSON.hasOwnProperty("content"))
+    {
       updateExpression += " content = :c,";
       attributeValues[":c"] = requestJSON.content;
     }
-    if (requestJSON.hasOwnProperty("timestamp")) {
+    if (requestJSON.hasOwnProperty("timestamp"))
+    {
       updateExpression += " timestamp = :t,";
       attributeValues[":t"] = requestJSON.timestamp;
     }
-    if (requestJSON.hasOwnProperty("votes")) {
+    if (requestJSON.hasOwnProperty("votes"))
+    {
       updateExpression += " votes = :v,";
       attributeValues[":v"] = requestJSON.votes;
     }
@@ -187,7 +205,8 @@ async function handlePatch(event, context) {
       statusCode: 200,
       body: JSON.stringify(result.Attributes),
     };
-  } else {
+  } else
+  {
     return {
       statusCode: 400,
       body: JSON.stringify({ error: "Missing post ID" }),
@@ -195,10 +214,12 @@ async function handlePatch(event, context) {
   }
 }
 
-async function handleDelete(event, context) {
+async function handleDelete(event, context)
+{
   // Delete an existing post
   const { queryStringParameters } = event;
-  if (queryStringParameters && queryStringParameters.id) {
+  if (queryStringParameters && queryStringParameters.id)
+  {
     await dynamo
       .delete({
         TableName: tableName,
@@ -209,7 +230,8 @@ async function handleDelete(event, context) {
       statusCode: 200,
       body: JSON.stringify({ success: true }),
     };
-  } else {
+  } else
+  {
     return {
       statusCode: 400,
       body: JSON.stringify({ error: "Missing post ID" }),
@@ -217,7 +239,8 @@ async function handleDelete(event, context) {
   }
 }
 
-async function handleOptions(event, context) {
+async function handleOptions(event, context)
+{
   // Return the allowed methods for CORS
   return {
     statusCode: 200,
