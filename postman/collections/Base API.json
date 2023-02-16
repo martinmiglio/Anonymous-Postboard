@@ -1,0 +1,1361 @@
+{
+	"info": {
+		"_postman_id": "de3a3448-4c00-4376-8c7a-cc4fc0605558",
+		"name": "Base API",
+		"description": "This is an API for the Anonymous Post Board",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "9718733-de3a3448-4c00-4376-8c7a-cc4fc0605558"
+	},
+	"item": [
+		{
+			"name": "posts",
+			"item": [
+				{
+					"name": "{{baseUrl}}/posts",
+					"id": "279297f7-8036-434d-823f-9ad47da07df9",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/posts?before=-26010742&latest=true&id=-26010742&count=-26010742",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts"
+							],
+							"query": [
+								{
+									"key": "before",
+									"value": "-26010742",
+									"description": "ID of the item to return the items before"
+								},
+								{
+									"key": "latest",
+									"value": "true",
+									"description": "If true, returns the latest items"
+								},
+								{
+									"key": "id",
+									"value": "-26010742",
+									"description": "ID of the item to return"
+								},
+								{
+									"key": "count",
+									"value": "-26010742",
+									"description": "Number of items to return"
+								}
+							]
+						},
+						"description": "Retrieve posts from the DynamoDB table"
+					},
+					"response": [
+						{
+							"id": "b91b2c31-d2f0-47b4-9b64-acc9f68233a6",
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/posts?before=-26010742&latest=true&id=-26010742&count=-26010742",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"posts"
+									],
+									"query": [
+										{
+											"key": "before",
+											"value": "-26010742",
+											"description": "ID of the item to return the items before"
+										},
+										{
+											"key": "latest",
+											"value": "true",
+											"description": "If true, returns the latest items"
+										},
+										{
+											"key": "id",
+											"value": "-26010742",
+											"description": "ID of the item to return"
+										},
+										{
+											"key": "count",
+											"value": "-26010742",
+											"description": "Number of items to return"
+										}
+									]
+								},
+								"description": "Retrieve posts from the DynamoDB table"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": \"<integer>\",\n    \"content\": \"<string>\",\n    \"timestamp\": \"<integer>\",\n    \"votes\": \"<integer>\",\n    \"ttl\": \"<integer>\"\n  },\n  {\n    \"id\": \"<integer>\",\n    \"content\": \"<string>\",\n    \"timestamp\": \"<integer>\",\n    \"votes\": \"<integer>\",\n    \"ttl\": \"<integer>\"\n  }\n]"
+						},
+						{
+							"id": "de9abd1a-9cda-4ed6-9552-2dbbcde95881",
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/posts?before=-26010742&latest=true&id=-26010742&count=-26010742",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"posts"
+									],
+									"query": [
+										{
+											"key": "before",
+											"value": "-26010742",
+											"description": "ID of the item to return the items before"
+										},
+										{
+											"key": "latest",
+											"value": "true",
+											"description": "If true, returns the latest items"
+										},
+										{
+											"key": "id",
+											"value": "-26010742",
+											"description": "ID of the item to return"
+										},
+										{
+											"key": "count",
+											"value": "-26010742",
+											"description": "Number of items to return"
+										}
+									]
+								},
+								"description": "Retrieve posts from the DynamoDB table"
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\"\n}"
+						},
+						{
+							"id": "ce5ab660-6b76-47b2-8824-b2e7f75a358e",
+							"name": "Invalid ID",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/posts?before=-26010742&latest=true&id=-26010742&count=-26010742",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"posts"
+									],
+									"query": [
+										{
+											"key": "before",
+											"value": "-26010742",
+											"description": "ID of the item to return the items before"
+										},
+										{
+											"key": "latest",
+											"value": "true",
+											"description": "If true, returns the latest items"
+										},
+										{
+											"key": "id",
+											"value": "-26010742",
+											"description": "ID of the item to return"
+										},
+										{
+											"key": "count",
+											"value": "-26010742",
+											"description": "Number of items to return"
+										}
+									]
+								},
+								"description": "Retrieve posts from the DynamoDB table"
+							},
+							"code": 513,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "{{baseUrl}}/posts",
+					"id": "eb108b96-fafc-45f4-adad-34007b18c56f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"content\": \"dolor sint\",\n  \"timestamp\": 4502903,\n  \"votes\": 54729826\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/posts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts"
+							]
+						},
+						"description": "Create a new post in the DynamoDB table"
+					},
+					"response": [
+						{
+							"id": "5cd5ca23-c9e9-4712-a37a-5d3c3b8f2b3c",
+							"name": "Success",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"content\": \"dolor sint\",\n  \"timestamp\": 4502903,\n  \"votes\": 54729826\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/posts",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"posts"
+									]
+								},
+								"description": "Create a new post in the DynamoDB table"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"<integer>\",\n  \"content\": \"<string>\",\n  \"timestamp\": \"<integer>\",\n  \"votes\": \"<integer>\",\n  \"ttl\": \"<integer>\"\n}"
+						},
+						{
+							"id": "89bc1a3e-c1da-41f8-9d44-f79c03f5df00",
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"content\": \"dolor sint\",\n  \"timestamp\": 4502903,\n  \"votes\": 54729826\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/posts",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"posts"
+									]
+								},
+								"description": "Create a new post in the DynamoDB table"
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "{{baseUrl}}/posts",
+					"id": "5eeaf062-2206-4b54-8cca-d8e20375ac93",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"content\": \"occaecat enim\",\n  \"timestamp\": 95847372,\n  \"votes\": 67102473,\n  \"ttl\": -59880850\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/posts?id=-26010742",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "-26010742",
+									"description": "ID of the item to update"
+								}
+							]
+						},
+						"description": "Update an existing post in the DynamoDB table"
+					},
+					"response": [
+						{
+							"id": "a132edd1-5041-497a-af02-b2565b27a699",
+							"name": "Success",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"content\": \"occaecat enim\",\n  \"timestamp\": 95847372,\n  \"votes\": 67102473,\n  \"ttl\": -59880850\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/posts?id=-26010742",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"posts"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "-26010742",
+											"description": "ID of the item to update"
+										}
+									]
+								},
+								"description": "Update an existing post in the DynamoDB table"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"<integer>\",\n  \"content\": \"<string>\",\n  \"timestamp\": \"<integer>\",\n  \"votes\": \"<integer>\",\n  \"ttl\": \"<integer>\"\n}"
+						},
+						{
+							"id": "8b891224-a2bc-4c81-b4b6-a496926e8484",
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"content\": \"occaecat enim\",\n  \"timestamp\": 95847372,\n  \"votes\": 67102473,\n  \"ttl\": -59880850\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/posts?id=-26010742",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"posts"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "-26010742",
+											"description": "ID of the item to update"
+										}
+									]
+								},
+								"description": "Update an existing post in the DynamoDB table"
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "{{baseUrl}}/posts",
+					"id": "00d19b2e-a9fb-499e-a662-d1c09c7ad0e8",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/posts?id=-26010742",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "-26010742",
+									"description": "ID of the item to delete"
+								}
+							]
+						},
+						"description": "Delete an existing post from the DynamoDB table"
+					},
+					"response": [
+						{
+							"id": "6b1b9077-d930-4a92-b066-e1929dc00e01",
+							"name": "Success",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/posts?id=-26010742",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"posts"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "-26010742",
+											"description": "ID of the item to delete"
+										}
+									]
+								},
+								"description": "Delete an existing post from the DynamoDB table"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"<integer>\",\n  \"content\": \"<string>\",\n  \"timestamp\": \"<integer>\",\n  \"votes\": \"<integer>\",\n  \"ttl\": \"<integer>\"\n}"
+						},
+						{
+							"id": "83583d84-6c9e-47a7-892a-ecf085b4e435",
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/posts?id=-26010742",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"posts"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "-26010742",
+											"description": "ID of the item to delete"
+										}
+									]
+								},
+								"description": "Delete an existing post from the DynamoDB table"
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\"\n}"
+						},
+						{
+							"id": "50ccbbf5-09dc-4fdc-8f3e-d3f712eaa855",
+							"name": "Invalid ID",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/posts?id=-26010742",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"posts"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "-26010742",
+											"description": "ID of the item to delete"
+										}
+									]
+								},
+								"description": "Delete an existing post from the DynamoDB table"
+							},
+							"code": 513,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\"\n}"
+						}
+					]
+				}
+			],
+			"id": "67a45a20-4223-485b-8eec-bda68b392400"
+		},
+		{
+			"name": "replies",
+			"item": [
+				{
+					"name": "{{baseUrl}}/replies",
+					"id": "1dc4f549-d201-4837-86b5-504e325306fe",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/replies?before=-26010742&latest=true&id=-26010742&count=-26010742",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"replies"
+							],
+							"query": [
+								{
+									"key": "before",
+									"value": "-26010742",
+									"description": "ID of the item to return the items before"
+								},
+								{
+									"key": "latest",
+									"value": "true",
+									"description": "If true, returns the latest items"
+								},
+								{
+									"key": "id",
+									"value": "-26010742",
+									"description": "ID of the item to return"
+								},
+								{
+									"key": "count",
+									"value": "-26010742",
+									"description": "Number of items to return"
+								}
+							]
+						},
+						"description": "Retrieve replies from the DynamoDB table"
+					},
+					"response": [
+						{
+							"id": "e6279e4b-52cb-4273-bf37-d64d625e7d93",
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/replies?before=-26010742&latest=true&id=-26010742&count=-26010742",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"replies"
+									],
+									"query": [
+										{
+											"key": "before",
+											"value": "-26010742",
+											"description": "ID of the item to return the items before"
+										},
+										{
+											"key": "latest",
+											"value": "true",
+											"description": "If true, returns the latest items"
+										},
+										{
+											"key": "id",
+											"value": "-26010742",
+											"description": "ID of the item to return"
+										},
+										{
+											"key": "count",
+											"value": "-26010742",
+											"description": "Number of items to return"
+										}
+									]
+								},
+								"description": "Retrieve replies from the DynamoDB table"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": \"<integer>\",\n    \"parent_id\": \"<integer>\",\n    \"content\": \"<string>\",\n    \"timestamp\": \"<integer>\",\n    \"votes\": \"<integer>\",\n    \"ttl\": \"<integer>\"\n  },\n  {\n    \"id\": \"<integer>\",\n    \"parent_id\": \"<integer>\",\n    \"content\": \"<string>\",\n    \"timestamp\": \"<integer>\",\n    \"votes\": \"<integer>\",\n    \"ttl\": \"<integer>\"\n  }\n]"
+						},
+						{
+							"id": "5c35d5bb-d1a0-4c9b-baad-9afc69b43c22",
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/replies?before=-26010742&latest=true&id=-26010742&count=-26010742",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"replies"
+									],
+									"query": [
+										{
+											"key": "before",
+											"value": "-26010742",
+											"description": "ID of the item to return the items before"
+										},
+										{
+											"key": "latest",
+											"value": "true",
+											"description": "If true, returns the latest items"
+										},
+										{
+											"key": "id",
+											"value": "-26010742",
+											"description": "ID of the item to return"
+										},
+										{
+											"key": "count",
+											"value": "-26010742",
+											"description": "Number of items to return"
+										}
+									]
+								},
+								"description": "Retrieve replies from the DynamoDB table"
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\"\n}"
+						},
+						{
+							"id": "e6940305-9923-4307-bdb5-f1d5759f81f8",
+							"name": "Invalid ID",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/replies?before=-26010742&latest=true&id=-26010742&count=-26010742",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"replies"
+									],
+									"query": [
+										{
+											"key": "before",
+											"value": "-26010742",
+											"description": "ID of the item to return the items before"
+										},
+										{
+											"key": "latest",
+											"value": "true",
+											"description": "If true, returns the latest items"
+										},
+										{
+											"key": "id",
+											"value": "-26010742",
+											"description": "ID of the item to return"
+										},
+										{
+											"key": "count",
+											"value": "-26010742",
+											"description": "Number of items to return"
+										}
+									]
+								},
+								"description": "Retrieve replies from the DynamoDB table"
+							},
+							"code": 513,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "{{baseUrl}}/replies",
+					"id": "a1c225a5-c172-49f1-997a-8f30eefe60d8",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"parent_id\": -41412788,\n  \"content\": \"laborum\",\n  \"timestamp\": -79991360,\n  \"votes\": -45772997\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/replies",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"replies"
+							]
+						},
+						"description": "Create a new reply in the DynamoDB table"
+					},
+					"response": [
+						{
+							"id": "6a39b746-e9f7-491b-8c6c-82558c3d9fa8",
+							"name": "Success",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"parent_id\": -41412788,\n  \"content\": \"laborum\",\n  \"timestamp\": -79991360,\n  \"votes\": -45772997\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/replies",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"replies"
+									]
+								},
+								"description": "Create a new reply in the DynamoDB table"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"<integer>\",\n  \"parent_id\": \"<integer>\",\n  \"content\": \"<string>\",\n  \"timestamp\": \"<integer>\",\n  \"votes\": \"<integer>\",\n  \"ttl\": \"<integer>\"\n}"
+						},
+						{
+							"id": "cc6c6429-206e-44b3-8958-2e56325c3044",
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"parent_id\": -41412788,\n  \"content\": \"laborum\",\n  \"timestamp\": -79991360,\n  \"votes\": -45772997\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/replies",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"replies"
+									]
+								},
+								"description": "Create a new reply in the DynamoDB table"
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "{{baseUrl}}/replies",
+					"id": "67b5d535-b97c-4892-91a5-28b1eca9df92",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"parent_id\": 25866507,\n  \"content\": \"ad eu fugiat\",\n  \"timestamp\": -813335,\n  \"votes\": -10043485,\n  \"ttl\": -26676947\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/replies?id=-26010742",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"replies"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "-26010742",
+									"description": "ID of the item to update"
+								}
+							]
+						},
+						"description": "Update an existing reply in the DynamoDB table"
+					},
+					"response": [
+						{
+							"id": "eb58198e-9fe3-4a41-8340-11c1007d928f",
+							"name": "Success",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"parent_id\": 25866507,\n  \"content\": \"ad eu fugiat\",\n  \"timestamp\": -813335,\n  \"votes\": -10043485,\n  \"ttl\": -26676947\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/replies?id=-26010742",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"replies"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "-26010742",
+											"description": "ID of the item to update"
+										}
+									]
+								},
+								"description": "Update an existing reply in the DynamoDB table"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"<integer>\",\n  \"parent_id\": \"<integer>\",\n  \"content\": \"<string>\",\n  \"timestamp\": \"<integer>\",\n  \"votes\": \"<integer>\",\n  \"ttl\": \"<integer>\"\n}"
+						},
+						{
+							"id": "ec296497-cf47-47e3-82a8-e1bdafeaaf60",
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"parent_id\": 25866507,\n  \"content\": \"ad eu fugiat\",\n  \"timestamp\": -813335,\n  \"votes\": -10043485,\n  \"ttl\": -26676947\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/replies?id=-26010742",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"replies"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "-26010742",
+											"description": "ID of the item to update"
+										}
+									]
+								},
+								"description": "Update an existing reply in the DynamoDB table"
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "{{baseUrl}}/replies",
+					"id": "45c4f37c-378b-4214-8647-4a8d8b753781",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/replies?id=-26010742",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"replies"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "-26010742",
+									"description": "ID of the item to delete"
+								}
+							]
+						},
+						"description": "Delete an existing reply from the DynamoDB table"
+					},
+					"response": [
+						{
+							"id": "d88ef0d5-7731-41ec-8d82-9be791542d5d",
+							"name": "Success",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/replies?id=-26010742",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"replies"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "-26010742",
+											"description": "ID of the item to delete"
+										}
+									]
+								},
+								"description": "Delete an existing reply from the DynamoDB table"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"<integer>\",\n  \"parent_id\": \"<integer>\",\n  \"content\": \"<string>\",\n  \"timestamp\": \"<integer>\",\n  \"votes\": \"<integer>\",\n  \"ttl\": \"<integer>\"\n}"
+						},
+						{
+							"id": "490c0a10-5b3a-4c20-a272-245a704ad7a2",
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/replies?id=-26010742",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"replies"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "-26010742",
+											"description": "ID of the item to delete"
+										}
+									]
+								},
+								"description": "Delete an existing reply from the DynamoDB table"
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\"\n}"
+						},
+						{
+							"id": "12835457-830b-4bfe-9b80-fd78ee5382db",
+							"name": "Invalid ID",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/replies?id=-26010742",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"replies"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "-26010742",
+											"description": "ID of the item to delete"
+										}
+									]
+								},
+								"description": "Delete an existing reply from the DynamoDB table"
+							},
+							"code": 513,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\"\n}"
+						}
+					]
+				}
+			],
+			"id": "f92702c1-de20-4b90-8e97-84fc1ac58a70"
+		}
+	],
+	"variable": [
+		{
+			"id": "2514516f-1cb6-4f3d-9fd7-2ee2df2cfbed",
+			"key": "baseUrl",
+			"value": "https://api.postboard.martinmiglio.dev",
+			"type": "string"
+		}
+	]
+}
