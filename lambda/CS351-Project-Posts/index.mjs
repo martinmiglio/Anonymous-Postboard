@@ -196,6 +196,14 @@ async function handlePatch(event, context)
       attributeValues[":ttl"] = requestJSON.ttl;
     }
 
+    if (updateExpression === "set")
+    {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: "No fields to update" }),
+      };
+    }
+
     // Remove the trailing comma from the update expression
     updateExpression = updateExpression.slice(0, -1);
 
