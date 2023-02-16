@@ -22,9 +22,10 @@ export default function Home() {
   async function fetchData() {
     const latestPosts = await getLatestPosts();
     setPosts(latestPosts);
+    setHasMorePosts(true);
   }
 
-  const onNewPost = () => {
+  const handleNewPost = () => {
     setShowNewPostModal(true);
   };
 
@@ -45,7 +46,7 @@ export default function Home() {
 
   return (
     <div className={styles.centerpane}>
-      <Banner onRefresh={fetchData} onNewPost={onNewPost} />
+      <Banner onRefresh={fetchData} onNewPost={handleNewPost} />
       <NewPostModal
         isOpen={showNewPostModal}
         onClose={handleCloseModal}

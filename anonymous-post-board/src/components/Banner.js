@@ -67,11 +67,7 @@ const Banner = ({ onRefresh, onNewPost }) => {
               padding: "8px",
             }}
           >
-            {loading ? (
-              <FontAwesomeIcon icon={faSync} style={iconStyle} spin />
-            ) : (
-              <FontAwesomeIcon icon={faSync} style={iconStyle} />
-            )}
+            <FontAwesomeIcon icon={faSync} style={iconStyle} spin={loading} />
           </button>
         ) : null}
       </div>
