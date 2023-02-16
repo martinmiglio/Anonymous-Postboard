@@ -130,6 +130,7 @@ async function handleGet(event, context)
 
 async function handlePut(event, context)
 {
+  const RETENTION_PERIOD = 60 * 60 * 24 * 30; // 30 days
   // Create a new post
   const { body } = event;
   const requestJSON = JSON.parse(body);
@@ -138,6 +139,7 @@ async function handlePut(event, context)
     content: requestJSON.content ?? "",
     timestamp: requestJSON.timestamp ?? Date.now(),
     votes: requestJSON.votes ?? 0,
+    ttl: Math.floor(Date.now() / 1000) + RETENTION_PERIOD,
   };
   await dynamo
     .put({
@@ -187,6 +189,11 @@ async function handlePatch(event, context)
     {
       updateExpression += " votes = :v,";
       attributeValues[":v"] = requestJSON.votes;
+    }
+    if (requestJSON.hasOwnProperty("ttl"))
+    {
+      updateExpression += " ttl = :ttl,";
+      attributeValues[":ttl"] = requestJSON.ttl;
     }
 
     // Remove the trailing comma from the update expression
