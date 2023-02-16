@@ -115,28 +115,29 @@ async function handleGet(event, context) {
   }
 }
 
-async function handlePut(event, context) {
+async function handlePut(event, context)
+{
   // Create a new post
   const { body } = event;
   const requestJSON = JSON.parse(body);
-  const now = Date.now();
+  const newPost = {
+    id: Date.now(), // id should be generated to avoid collisions
+    content: requestJSON.content ?? "",
+    timestamp: requestJSON.timestamp ?? Date.now(),
+    votes: requestJSON.votes ?? 0,
+  };
   await dynamo
     .put({
       TableName: tableName,
-      Item: {
-        // id should be generated to avoid collisions
-        id: now,
-        content: requestJSON.content ?? "",
-        timestamp: requestJSON.timestamp ?? now, // default to current time if not provided
-        votes: requestJSON.votes ?? 0, // default to 0 if not provided
-      },
+      Item: newPost,
     })
     .promise();
-  // Return the newly created post
+
+  // Return the newly created post as read from the database
   const result = await dynamo
     .get({
       TableName: tableName,
-      Key: { id: now },
+      Key: { id: newPost.id },
     })
     .promise();
   return {
