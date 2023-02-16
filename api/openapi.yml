@@ -1,8 +1,11 @@
-openapi: 3.1.0
+openapi: 3.0.0
 info:
   title: API for the Anonymous Post Board
   version: 1.0.0
   description: This is an API for the Anonymous Post Board
+servers:
+  - url: https://api.postboard.martinmiglio.dev
+    description: Production server
 paths:
   /posts:
     get:
@@ -11,7 +14,7 @@ paths:
         - in: query
           name: before
           schema:
-            type: string
+            type: integer
           description: ID of the item to return the items before
         - in: query
           name: latest
@@ -21,7 +24,7 @@ paths:
         - in: query
           name: id
           schema:
-            type: string
+            type: integer
           description: ID of the item to return
         - in: query
           name: count
@@ -82,8 +85,6 @@ paths:
                   type: integer
                 votes:
                   type: integer
-                ttl:
-                  type: integer
       responses:
         "200":
           description: Success
@@ -117,7 +118,7 @@ paths:
         - in: query
           name: id
           schema:
-            type: string
+            type: integer
           description: ID of the item to update
       requestBody:
         description: Post object to be updated
@@ -168,7 +169,7 @@ paths:
         - in: query
           name: id
           schema:
-            type: string
+            type: integer
           description: ID of the item to delete
       responses:
         "200":
@@ -213,7 +214,7 @@ paths:
         - in: query
           name: before
           schema:
-            type: string
+            type: integer
           description: ID of the item to return the items before
         - in: query
           name: latest
@@ -223,7 +224,7 @@ paths:
         - in: query
           name: id
           schema:
-            type: string
+            type: integer
           description: ID of the item to return
         - in: query
           name: count
@@ -241,6 +242,8 @@ paths:
                   type: object
                   properties:
                     id:
+                      type: integer
+                    parent_id:
                       type: integer
                     content:
                       type: string
@@ -286,8 +289,6 @@ paths:
                   type: integer
                 votes:
                   type: integer
-                ttl:
-                  type: integer
       responses:
         "200":
           description: Success
@@ -323,7 +324,7 @@ paths:
         - in: query
           name: id
           schema:
-            type: string
+            type: integer
           description: ID of the item to update
       requestBody:
         description: Reply object to be updated
@@ -378,7 +379,7 @@ paths:
         - in: query
           name: id
           schema:
-            type: string
+            type: integer
           description: ID of the item to delete
       responses:
         "200":
