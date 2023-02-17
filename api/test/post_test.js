@@ -1,5 +1,4 @@
 // Description: This file contains the tests for the post API
-// run with: npm run test
 
 const axios = require("axios").default;
 const expect = require("chai").expect;
