@@ -38,7 +38,7 @@ const Banner = ({ onRefresh, onNewPost }) => {
         zIndex: 1,
       }}
     >
-      <h1 style={{ fontSize: "24px" }}>Anonymous Post Board</h1>
+      <h1>Anonymous Post Board</h1>
       <div style={{ width: "fit-content" }}>
         {onNewPost ? (
           <button
