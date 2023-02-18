@@ -9,3 +9,7 @@ updates:
     directory: "/anonymous-post-board/" # Location of package manifests
     schedule:
       interval: "daily"
+  - package-ecosystem: "pip" # See documentation for possible values
+    directory: "/load-testing/" # Location of package manifests
+    schedule:
+      interval: "weekly"

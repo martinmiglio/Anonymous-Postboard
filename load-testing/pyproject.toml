@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "load-testing"
+version = "0.1.0"
+description = "a project for load testing the site and api"
+license = "none"
+authors = ["Martin Miglio <marmig0404@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+selenium = "^4.8.2"
+ipykernel = "^6.21.2"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.1.0"
+isort = "^5.12.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
