@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { makePost } from "@/api/posts.js";
+import Filter from "bad-words";
+
+const filter = new Filter();
 
 const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
   const defaultContent = "What's on your mind?";
@@ -18,7 +21,7 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
     if (content === "") {
       return;
     }
-    const post = { content: content };
+    const post = { content: filter.clean(content) };
     makePost(post).then((post) => {
       setNewPostID(post.id);
     });
