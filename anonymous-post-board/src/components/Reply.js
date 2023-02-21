@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import dynamic from "next/dynamic";
 
 import { formatDistanceToNow } from "date-fns";
 
-import Vote from "./Vote";
+const Vote = dynamic(() => import("./Vote"));
 
 const Reply = ({ reply }) => {
   const [votes, setVotes] = useState(reply.votes);

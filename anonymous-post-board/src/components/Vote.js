@@ -6,6 +6,7 @@ import styles from "@/styles/Vote.module.css";
 const Vote = ({ votes, onUpvote, onDownvote, status }) => (
   <div className={styles.vote}>
     <button
+      aria-label="upvote post"
       className={styles.upvote}
       onClick={onUpvote}
       style={{
@@ -16,6 +17,7 @@ const Vote = ({ votes, onUpvote, onDownvote, status }) => (
     </button>
     <p className={styles.votecount}>{votes}</p>
     <button
+      aria-label="downvote post"
       className={styles.downvote}
       onClick={onDownvote}
       style={{

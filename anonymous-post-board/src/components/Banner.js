@@ -42,6 +42,7 @@ const Banner = ({ onRefresh, onNewPost }) => {
       <div style={{ width: "fit-content" }}>
         {onNewPost ? (
           <button
+            aria-label="new post"
             id="newPostButton"
             onClick={handleNewPost}
             style={{
@@ -57,6 +58,7 @@ const Banner = ({ onRefresh, onNewPost }) => {
         ) : null}
         {onRefresh ? (
           <button
+            aria-label="refresh"
             id="refreshButton"
             onClick={handleRefresh}
             style={{

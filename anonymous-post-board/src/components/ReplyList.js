@@ -1,10 +1,13 @@
 import React from "react";
-import Reply from "./Reply";
+import dynamic from "next/dynamic";
+const Reply = dynamic(() => import("./Reply.js"));
 
 const ReplyList = ({ replies }) => (
-  <div style={{
-    borderLeftStyle: "solid",
-  }}>
+  <div
+    style={{
+      borderLeftStyle: "solid",
+    }}
+  >
     {replies.map((reply) => (
       <Reply key={reply.id} reply={reply} />
     ))}

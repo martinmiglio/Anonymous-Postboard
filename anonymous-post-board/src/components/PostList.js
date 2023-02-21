@@ -1,7 +1,8 @@
 import React from "react";
-import InfiniteScroll from "react-infinite-scroller";
+import dynamic from "next/dynamic";
 
-import Post from "./Post";
+const InfiniteScroll = dynamic(() => import("react-infinite-scroller"));
+const Post = dynamic(() => import("./Post"));
 
 function PostList({ posts, loadMorePosts, hasMorePosts }) {
   return (

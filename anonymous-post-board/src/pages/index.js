@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styles from "@/styles/Home.module.css";
-import PostList from "@/components/PostList.js";
-import Banner from "@/components/Banner.js";
-import NewPostModal from "@/components/NewPostModal.js";
-import { getLatestPosts, fetchMorePosts } from "@/api/posts.js";
+import { getLatestPosts, fetchMorePosts } from "@/api/posts";
+import dynamic from "next/dynamic";
+
+const PostList = dynamic(() => import("@/components/PostList.js"));
+const Banner = dynamic(() => import("@/components/Banner.js"));
+const NewPostModal = dynamic(() => import("@/components/NewPostModal.js"));
 
 export default function Home() {
   const [posts, setPosts] = useState([]);

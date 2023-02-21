@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 
 import { formatDistanceToNow } from "date-fns";
 
-import Vote from "./Vote";
-import ReplyList from "./ReplyList";
+const Vote = dynamic(() => import("./Vote"));
+const ReplyList = dynamic(() => import("./ReplyList"));
 
 function Post({ post }) {
   const [votes, setVotes] = useState(Number(post.votes));
