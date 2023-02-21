@@ -39,7 +39,7 @@ export async function makePost(post) {
 }
 
 export async function changeVotes(id, voteCount) {
-  console.log(post);
+  console.log(id);
   const obj = {votes: voteCount};
   const request = {
     method: "patch",
