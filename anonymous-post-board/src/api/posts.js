@@ -37,3 +37,21 @@ export async function makePost(post) {
   console.log(`posted ${response.data.id}`);
   return response.data;
 }
+
+export async function changeVotes(id, voteCount) {
+  console.log(post);
+  const obj = {votes: voteCount};
+  const request = {
+    method: "patch",
+    maxBodyLength: Infinity,
+    url: `${API_URL}/posts?id=${id}`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: JSON.stringify(obj),
+  };
+  console.log(request);
+  const response = await axios(request);
+  console.log(`posted ${response.data.id}`);
+  return response.data;
+}
