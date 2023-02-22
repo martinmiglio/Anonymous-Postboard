@@ -1,3 +1,7 @@
+// CS351-Project-Replies/index.mjs
+// This is the Lambda function for the replies table
+// The API is documented in API/schemas/openapi.yml
+
 import AWS from "aws-sdk";
 
 const dynamo = new AWS.DynamoDB.DocumentClient();

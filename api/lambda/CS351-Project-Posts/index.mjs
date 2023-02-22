@@ -1,3 +1,7 @@
+// CS351-Project-Posts/index.mjs
+// This is the Lambda function for the posts table
+// The API is documented in API/schemas/openapi.yml
+
 import AWS from "aws-sdk";
 
 const dynamo = new AWS.DynamoDB.DocumentClient();
