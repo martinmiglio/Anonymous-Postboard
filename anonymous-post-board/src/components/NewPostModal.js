@@ -3,14 +3,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { makePost } from "@/api/posts.js";
 import Filter from "bad-words";
-
-const filter = new Filter();
+import Graphemer from "graphemer";
 
 const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
   const defaultContent = "What's on your mind?";
+  const maxContentLength = 280;
+
+  const filter = new Filter();
 
   const [content, setContent] = useState("");
   const [focused, setFocused] = useState(false);
+  const [postError, setPostError] = useState(false);
+
+  const contentLenght = new Graphemer().countGraphemes(content);
+  const isTooLong = contentLenght > maxContentLength;
 
   const handleChange = (event) => {
     setContent(event.target.value);
@@ -18,7 +24,11 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (content === "") {
+    if (content === "" || isTooLong) {
+      setPostError(true);
+      setTimeout(() => {
+        setPostError(false);
+      }, 500);
       return;
     }
     const post = { content: filter.clean(content) };
@@ -64,6 +74,7 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
     cursor: "text",
     whiteSpace: "pre-wrap",
     overflowWrap: "break-word",
+    overflow: "hidden",
     lineHeight: "24px",
     backgroundColor: "transparent",
     border: "none",
@@ -71,6 +82,7 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
     opacity: content === "" ? "0.5" : "1",
     color: "white",
     padding: "5px 0 0",
+    resize: "none",
   };
 
   const buttonStyle = {
@@ -86,7 +98,15 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
     height: "24px",
   };
 
+  const contentLengthStyle = {
+    color: isTooLong ? "indianred" : "white",
+    opacity: String(0.5 + 0.5 * (contentLenght / maxContentLength)),
+    fontSize: "0.8em",
+    textAlign: "right",
+  };
+
   const show = isOpen ? true : false;
+
   return (
     show && (
       // style the modal to be centered on the page, overtop the rest of the content
@@ -115,7 +135,11 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
               disabled={content === defaultContent}
               onClick={handleSubmit}
             >
-              <FontAwesomeIcon icon={faPaperPlane} style={iconStyle} />
+              <FontAwesomeIcon
+                icon={faPaperPlane}
+                style={iconStyle}
+                shake={postError}
+              />
             </button>
           </div>
           <textarea
@@ -127,6 +151,9 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
             spellCheck="true"
             rows="3"
           />
+          <p style={contentLengthStyle}>
+            {contentLenght}/{maxContentLength}
+          </p>
         </form>
       </div>
     )
