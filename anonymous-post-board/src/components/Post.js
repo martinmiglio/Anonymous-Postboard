@@ -75,24 +75,42 @@ function Post({ post }) {
       }}
     >
       <div style={{ display: "flex", flexDirection: "row" }}>
-        <div style={{ flexGrow: "1" }}>
+        <div
+          style={{
+            flexGrow: "1",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+          }}
+        >
           <p style={{ overflowWrap: "break-word" }}>{post.content}</p>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              paddingTop: "0.5rem",
-            }}
-          >
-            <p style={{ fontSize: "10px" }}>By Anonymous User </p>
-            <p style={{ fontSize: "10px", paddingRight: "10px" }}>Reply</p>
+          <div>
+            <p style={{ fontSize: "10px", paddingTop: "0.5rem" }}>
+              By Anonymous User{" "}
+            </p>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <p style={{ fontSize: "10px", opacity: "0.4" }}>
+                {formatDistanceToNow(post.timestamp ?? new Date(), {
+                  addSuffix: true,
+                })}
+              </p>
+              <p
+                style={{
+                  fontSize: "10px",
+                  paddingRight: "10px",
+                  cursor: "pointer",
+                }}
+              >
+                Reply
+              </p>
+            </div>
           </div>
-          <p style={{ fontSize: "10px", opacity: "0.4" }}>
-            {formatDistanceToNow(post.timestamp ?? new Date(), {
-              addSuffix: true,
-            })}
-          </p>
         </div>
         <Vote
           votes={votes}
