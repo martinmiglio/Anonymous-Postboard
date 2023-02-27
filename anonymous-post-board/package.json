@@ -22,7 +22,7 @@
     "react-infinite-scroller": "^1.2.6"
   },
   "devDependencies": {
-    "eslint": "8.34.0",
+    "eslint": "8.35.0",
     "eslint-config-next": "13.2.1"
   }
 }
