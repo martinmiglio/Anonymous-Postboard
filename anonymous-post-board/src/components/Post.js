@@ -77,10 +77,12 @@ function Post({ post }) {
       <div style={{ display: "flex", flexDirection: "row" }}>
         <div
           style={{
-            flexGrow: "1",
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
+            flexGrow: "1",
+            flexShrink: "1",
+            overflow: "auto",
           }}
         >
           <p style={{ overflowWrap: "break-word" }}>{post.content}</p>
