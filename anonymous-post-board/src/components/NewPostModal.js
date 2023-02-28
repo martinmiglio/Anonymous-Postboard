@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { makePost } from "@/api/posts.js";
+import PostAPI from "@/api/posts.js";
 import Filter from "bad-words";
 import Graphemer from "graphemer";
 
@@ -32,7 +32,7 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
       return;
     }
     const post = { content: filter.clean(content) };
-    makePost(post).then((post) => {
+    PostAPI.makePost(post).then((post) => {
       setNewPostID(post.id);
     });
     onClose();
