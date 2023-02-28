@@ -6,14 +6,24 @@ import { formatDistanceToNow } from "date-fns";
 
 const Vote = dynamic(() => import("./Vote"));
 const ReplyList = dynamic(() => import("./ReplyList"));
+const NewReplyModal = dynamic(() => import("./NewReplyModal"));
 
 function Post({ post }) {
   const [firstLoad, setFirstLoad] = useState(true);
   const [votes, setVotes] = useState(Number(post.votes));
-  const [replies, setReplies] = useState(post.replies);
   const [voteStatus, setVoteStatus] = useState(
     localStorage.getItem(`p-${post.id}`) || undefined
   );
+  const [replies, setReplies] = useState(post.replies);
+  const [showNewReplyModal, setShowNewReplyModal] = useState(false);
+
+  const handleNewReply = () => {
+    setShowNewReplyModal(true);
+  };
+
+  const handleCloseNewReplyModal = () => {
+    setShowNewReplyModal(false);
+  };
 
   useEffect(() => {
     // don't update votes on first load
@@ -77,22 +87,39 @@ function Post({ post }) {
       <div style={{ display: "flex", flexDirection: "row" }}>
         <div style={{ flexGrow: "1" }}>
           <p style={{ overflowWrap: "break-word" }}>{post.content}</p>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              paddingTop: "0.5rem",
-            }}
-          >
-            <p style={{ fontSize: "10px" }}>By Anonymous User </p>
-            <p style={{ fontSize: "10px", paddingRight: "10px" }}>Reply</p>
+          <div>
+            <p style={{ fontSize: "10px", paddingTop: "0.5rem" }}>
+              By Anonymous User{" "}
+            </p>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <p style={{ fontSize: "10px", opacity: "0.4" }}>
+                {formatDistanceToNow(post.timestamp ?? new Date(), {
+                  addSuffix: true,
+                })}
+              </p>
+              {!showNewReplyModal && (
+                <button
+                  style={{
+                    fontSize: "10px",
+                    paddingRight: "10px",
+                    cursor: "pointer",
+                    backgroundColor: "transparent",
+                    border: "none",
+                    color: "white",
+                  }}
+                  onClick={handleNewReply}
+                >
+                  Reply
+                </button>
+              )}
+            </div>
           </div>
-          <p style={{ fontSize: "10px", opacity: "0.4" }}>
-            {formatDistanceToNow(post.timestamp ?? new Date(), {
-              addSuffix: true,
-            })}
-          </p>
         </div>
         <Vote
           votes={votes}
@@ -102,6 +129,13 @@ function Post({ post }) {
         />
       </div>
       <ReplyList replies={replies ?? []} />
+      <NewReplyModal
+        isOpen={showNewReplyModal}
+        onClose={handleCloseNewReplyModal}
+        parentPost={post}
+        parentReplies={replies}
+        setParentReplies={setReplies}
+      />
     </div>
   );
 }
