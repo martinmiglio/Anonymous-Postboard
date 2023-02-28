@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 
 import { formatDistanceToNow } from "date-fns";
@@ -8,7 +8,7 @@ const Vote = dynamic(() => import("./Vote"));
 const Reply = ({ reply }) => {
   const [votes, setVotes] = useState(reply.votes);
   const [voteStatus, setVoteStatus] = useState(
-    localStorage.getItem(`p-${post.id}`)
+    localStorage.getItem(`r-${reply.id}`)
   );
 
   useEffect(() => {
