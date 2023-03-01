@@ -27,7 +27,7 @@ describe("Post API", () => {
         console.log(`\tCreated working post: ${JSON.stringify(response.data)}`);
         done();
       });
-    });
+    }).timeout(timeout);
   });
 
   // get a post by id
@@ -111,6 +111,6 @@ describe("Post API", () => {
         expect(response.data.success).to.equal(true);
         done();
       });
-    });
+    }).timeout(timeout);
   });
 });
