@@ -42,79 +42,33 @@ export const handler = async (event) => {
 //Functions 
 async function getReplies(event) {
     const { queryStringParameters } = event;
-    const DEFAULT_COUNT = 1;
-    if (queryStringParameters && queryStringParameters.latest) {
-        // If the latest parameter is specified, return the latest items
-        const result = await dynamo.scan({ TableName: tableName }).promise();
-        const items = result.Items;
-        // Sort the items based on the timestamp, most recent first
-        items.sort((a, b) => {
-            return b.timestamp - a.timestamp;
-        });
+    const parent_id = queryStringParameters.parent_id;
+
+    const params = {
+        TableName: 'cs351-project-posts',
+        IndexName: 'parent_id-index', // Use the parent_id-index GSI
+        KeyConditionExpression: 'parent_id = :pid',
+        ExpressionAttributeValues: {
+            ':pid': parent_id,
+        },
+        ScanIndexForward: false, // Sort results in descending order by default
+    };
+
+    try {
+        const result = await dynamo.query(params).promise();
         return {
             statusCode: 200,
-            body: JSON.stringify(
-                items.slice(0, Number(queryStringParameters.count ?? DEFAULT_COUNT))
-            ),
+            body: JSON.stringify(result.Items),
         };
-    } else if (queryStringParameters && queryStringParameters.before) {
-        // If an ID is specified, return the items before that ID
-        const result = await dynamo.scan({ TableName: tableName }).promise();
-        const items = result.Items;
-        //Sort the items based on the timestamp, most recent first
-        items.sort((a, b) => {
-            return b.timestamp - a.timestamp;
-        });
-        //If an ID is specified, start return from the next item until item count
-        const idIndex = items.findIndex(
-            (item) => item.id === Number(queryStringParameters.before)
-        );
-        if (idIndex === -1) {
-            //If the ID is not found, return an error
-            return {
-                statusCode: 513,
-                body: JSON.stringify({
-                    error: `No item found by id ${queryStringParameters.before}`,
-                }),
-            };
-        }
-        //Start from the next item
-        const startIndex = idIndex + 1;
+    } catch (error) {
+        console.error(error);
         return {
-            statusCode: 200,
-            body: JSON.stringify(
-                items.slice(
-                    startIndex,
-                    startIndex + Number(queryStringParameters.count ?? DEFAULT_COUNT)
-                )
-            ),
-        };
-    } else if (queryStringParameters && queryStringParameters.id) {
-        //If an ID is specified, return the item with that ID
-        const result = await dynamo
-            .get({
-                TableName: tableName,
-                Key: { id: Number(queryStringParameters.id) },
-            })
-            .promise();
-        return {
-            statusCode: 200,
-            body: JSON.stringify(result.Item),
-        };
-    } else {
-        //Otherwise, return all items
-        const result = await dynamo.scan({ TableName: tableName }).promise();
-        const items = result.Items;
-        //Sort the items based on the timestamp, most recent first
-        items.sort((a, b) => {
-            return a.timestamp - b.timestamp;
-        });
-        return {
-            statusCode: 200,
-            body: JSON.stringify(items),
+            statusCode: 500,
+            body: JSON.stringify({ message: 'Failed to retrieve replies' }),
         };
     }
 }
+
 
 async function putReplies(event) {
     const RETENTION_PERIOD = 60 * 60 * 24 * 30; // 30 days
@@ -122,7 +76,7 @@ async function putReplies(event) {
     const requestJSON = JSON.parse(body);
     // Get the parent post to check if it exists
     const parentPost = await dynamo.get({
-        TableName: tableName,
+        TableName: 'cs351-project-posts',
         Key: { id: requestJSON.parent_id },
     }).promise();
     // Return an error response if the parent post does not exist
@@ -134,7 +88,7 @@ async function putReplies(event) {
     }
     // Create a new post
     const newPost = {
-        id: Date.now().toString(), // id should be generated to avoid collisions
+        id: Date.now(), // id should be generated to avoid collisions
         parent_id: requestJSON.parent_id,
         content: requestJSON.content ?? "",
         timestamp: requestJSON.timestamp ?? Date.now(),
@@ -143,12 +97,12 @@ async function putReplies(event) {
     };
     // Add the new post to the database
     await dynamo.put({
-        TableName: tableName,
+        TableName: 'cs351-project-posts',
         Item: newPost,
     }).promise();
     // Return the newly created post as read from the database
     const result = await dynamo.get({
-        TableName: tableName,
+        TableName: 'cs351-project-posts',
         Key: { id: newPost.id },
     }).promise();
     return {
@@ -156,6 +110,7 @@ async function putReplies(event) {
         body: JSON.stringify(result.Item),
     };
 }
+
 
 
 async function patchReplies(event) {
