@@ -8,10 +8,13 @@ const dynamo = new AWS.DynamoDB.DocumentClient();
 
 const tableName = "cs351-project-posts";
 
-export const handler = async (event, context) => {
-  try {
+export const handler = async (event, context) =>
+{
+  try
+  {
     const httpMethod = event.httpMethod;
-    switch (httpMethod) {
+    switch (httpMethod)
+    {
       case "GET":
         return handleGet(event, context);
       case "PUT":
@@ -31,7 +34,8 @@ export const handler = async (event, context) => {
           }),
         };
     }
-  } catch (error) {
+  } catch (error)
+  {
     return {
       statusCode: 512,
       body: JSON.stringify(error, Object.getOwnPropertyNames(error)),
@@ -39,16 +43,19 @@ export const handler = async (event, context) => {
   }
 };
 
-async function handleGet(event, context) {
+async function handleGet(event, context)
+{
   const { queryStringParameters } = event;
   const DEFAULT_COUNT = 1;
 
-  if (queryStringParameters && queryStringParameters.latest) {
+  if (queryStringParameters && queryStringParameters.latest)
+  {
     // If the latest parameter is specified, return the latest items
     const result = await dynamo.scan({ TableName: tableName }).promise();
     const items = result.Items;
     // Sort the items based on the timestamp, most recent first
-    items.sort((a, b) => {
+    items.sort((a, b) =>
+    {
       return b.timestamp - a.timestamp;
     });
     return {
@@ -57,12 +64,14 @@ async function handleGet(event, context) {
         items.slice(0, Number(queryStringParameters.count ?? DEFAULT_COUNT))
       ),
     };
-  } else if (queryStringParameters && queryStringParameters.before) {
+  } else if (queryStringParameters && queryStringParameters.before)
+  {
     // If an ID is specified, return the items before that ID
     const result = await dynamo.scan({ TableName: tableName }).promise();
     const items = result.Items;
     // Sort the items based on the timestamp, most recent first
-    items.sort((a, b) => {
+    items.sort((a, b) =>
+    {
       return b.timestamp - a.timestamp;
     });
     // If an ID is specified, start return from the next item until item count
@@ -70,7 +79,8 @@ async function handleGet(event, context) {
       (item) => item.id === Number(queryStringParameters.before)
     );
 
-    if (idIndex === -1) {
+    if (idIndex === -1)
+    {
       // If the ID is not found, return an error
       return {
         statusCode: 513,
@@ -92,7 +102,8 @@ async function handleGet(event, context) {
         )
       ),
     };
-  } else if (queryStringParameters && queryStringParameters.id) {
+  } else if (queryStringParameters && queryStringParameters.id)
+  {
     // If an ID is specified, return the item with that ID
     const result = await dynamo
       .get({
@@ -104,12 +115,14 @@ async function handleGet(event, context) {
       statusCode: 200,
       body: JSON.stringify(result.Item),
     };
-  } else {
+  } else
+  {
     // Otherwise, return all items
     const result = await dynamo.scan({ TableName: tableName }).promise();
     const items = result.Items;
     // Sort the items based on the timestamp, most recent first
-    items.sort((a, b) => {
+    items.sort((a, b) =>
+    {
       return b.timestamp - a.timestamp;
     });
     return {
@@ -152,61 +165,64 @@ async function handlePut(event, context)
   };
 }
 
-async function handlePatch(event, context) {
+async function handlePatch(event, context)
+{
   // Update an existing post
   const { body, queryStringParameters } = event;
 
-  if (queryStringParameters && queryStringParameters.id) {
-    const requestJSON = JSON.parse(body);
+  if (queryStringParameters && queryStringParameters.id)
+  {
+    // get the existing post from the database
+    const originalPost = await dynamo
+      .get({
+        TableName: tableName,
+        Key: { id: Number(queryStringParameters.id) },
+      })
+      .promise();
 
-    const attributeValues = {};
-    let updateExpression = "set";
-
-    // Build the update expression and attribute values based on the JSON body
-    // this will ensure that only the provided fields are updated
-    if (requestJSON.hasOwnProperty("content")) {
-      updateExpression += " content = :c,";
-      attributeValues[":c"] = requestJSON.content;
-    }
-    if (requestJSON.hasOwnProperty("timestamp")) {
-      updateExpression += " timestamp = :t,";
-      attributeValues[":t"] = requestJSON.timestamp;
-    }
-    if (requestJSON.hasOwnProperty("votes")) {
-      updateExpression += " votes = :v,";
-      attributeValues[":v"] = requestJSON.votes;
-    }
-    if (requestJSON.hasOwnProperty("ttl"))
+    if (!originalPost.Item)
     {
-      updateExpression += " ttl = :ttl,";
-      attributeValues[":ttl"] = requestJSON.ttl;
-    }
-
-    if (updateExpression === "set")
-    {
+      // If the post does not exist, return an error
       return {
-        statusCode: 400,
-        body: JSON.stringify({ error: "No fields to update" }),
+        statusCode: 513,
+        body: JSON.stringify({
+          error: `No item found by id ${queryStringParameters.id}`,
+        }),
       };
     }
 
-    // Remove the trailing comma from the update expression
-    updateExpression = updateExpression.slice(0, -1);
+    // Parse the body of the request
+    const requestJSON = JSON.parse(body);
 
-    const result = await dynamo
+    // replace the values in the original post with the values in the request
+    // if the value is not provided in the request, use the original value
+    const updatedPost = {
+      id: Number(queryStringParameters.id),
+      content: requestJSON.content ?? originalPost.Item.content,
+      timestamp: originalPost.Item.timestamp,
+      votes: requestJSON.votes ?? originalPost.Item.votes,
+      ttl: originalPost.Item.ttl,
+    };
+
+    // Update the post in the database using dynamo.update
+    await dynamo
       .update({
         TableName: tableName,
         Key: { id: Number(queryStringParameters.id) },
-        UpdateExpression: updateExpression,
-        ExpressionAttributeValues: attributeValues,
-        ReturnValues: "ALL_NEW",
+        UpdateExpression:
+          "set content = :content, votes = :votes",
+        ExpressionAttributeValues: {
+          ":content": updatedPost.content,
+          ":votes": updatedPost.votes,
+        },
       })
       .promise();
     return {
       statusCode: 200,
-      body: JSON.stringify(result.Attributes),
+      body: JSON.stringify(updatedPost),
     };
-  } else {
+  } else
+  {
     return {
       statusCode: 400,
       body: JSON.stringify({ error: "Missing post ID" }),
@@ -214,10 +230,12 @@ async function handlePatch(event, context) {
   }
 }
 
-async function handleDelete(event, context) {
+async function handleDelete(event, context)
+{
   // Delete an existing post
   const { queryStringParameters } = event;
-  if (queryStringParameters && queryStringParameters.id) {
+  if (queryStringParameters && queryStringParameters.id)
+  {
     await dynamo
       .delete({
         TableName: tableName,
@@ -228,7 +246,8 @@ async function handleDelete(event, context) {
       statusCode: 200,
       body: JSON.stringify({ success: true }),
     };
-  } else {
+  } else
+  {
     return {
       statusCode: 400,
       body: JSON.stringify({ error: "Missing post ID" }),
@@ -236,7 +255,8 @@ async function handleDelete(event, context) {
   }
 }
 
-async function handleOptions(event, context) {
+async function handleOptions(event, context)
+{
   // Return the allowed methods for CORS
   return {
     statusCode: 200,
