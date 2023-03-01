@@ -86,6 +86,34 @@ describe("Reply API", () => {
     }).timeout(timeout);
   });
 
+  // update a reply
+  describe("Update a reply", () => {
+    it("should update a reply", (done) => {
+      const body = {
+        content: "This is a reply for testing purposes. (updated)",
+        votes: 1,
+      };
+      axios
+        .patch(`${url}/replies?id=${workingReplyId}`, body)
+        .then((response) => {
+          expect(response.status).to.equal(200);
+          expect(response.data).to.have.property("id");
+          expect(response.data).to.have.property("parent_id");
+          expect(response.data).to.have.property("content");
+          expect(response.data).to.have.property("timestamp");
+          expect(response.data).to.have.property("votes");
+          expect(response.data).to.have.property("ttl");
+          expect(response.data.id).to.equal(workingReplyId);
+          expect(response.data.content).to.equal(body.content);
+          expect(response.data.votes).to.equal(body.votes);
+          console.log(
+            `\tUpdated working reply: ${JSON.stringify(response.data)}`
+          );
+          done();
+        });
+    }).timeout(timeout);
+  });
+
   // delete a reply
   describe("Delete a reply", () => {
     it("should delete a reply", (done) => {
