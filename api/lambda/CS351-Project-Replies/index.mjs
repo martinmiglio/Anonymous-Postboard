@@ -113,42 +113,68 @@ async function putReplies(event) {
 
 
 
-async function patchReplies(event) {
-    // Update an existing post
+async function patchReplies(event)
+{
+    // Update an existing reply
     const { body, queryStringParameters } = event;
-    if (queryStringParameters && queryStringParameters.id) {
-        const requestJSON = JSON.parse(body);
-        const attributeValues = {};
-        let updateExpression = "set";
-        // Build the update expression and attribute values based on the JSON body
-        // this will ensure that only the provided fields are updated
-        if (requestJSON.hasOwnProperty("parent_id")) {
-            updateExpression += " parent_id = :p,";
-            attributeValues[":p"] = requestJSON.parent_id;
-        }
-        if (requestJSON.hasOwnProperty("content")) {
-            updateExpression += " content = :c,";
-            attributeValues[":c"] = requestJSON.content;
-        }
-        if (requestJSON.hasOwnProperty("timestamp")) {
-            updateExpression += " timestamp = :t,";
-            attributeValues[":t"] = requestJSON.timestamp;
-        }
-        if (requestJSON.hasOwnProperty("votes")) {
-            updateExpression += " votes = :v,";
-            attributeValues[":v"] = requestJSON.votes;
-        }
-        if (requestJSON.hasOwnProperty("ttl")) {
-            updateExpression += " ttl = :ttl,";
-            attributeValues[":ttl"] = requestJSON.ttl;
-        }
 
-        if (updateExpression === "set") {
+    if (queryStringParameters && queryStringParameters.id)
+    {
+        // get the existing reply from the database
+        const originalReply = await dynamo
+            .get({
+                TableName: tableName,
+                Key: { id: Number(queryStringParameters.id) },
+            })
+            .promise();
+
+        if (!originalReply.Item)
+        {
+            // If the reply does not exist, return an error
             return {
-                statusCode: 400,
-                body: JSON.stringify({ error: "No fields to update" }),
+                statusCode: 513,
+                body: JSON.stringify({
+                    error: `No item found by id ${queryStringParameters.id}`,
+                }),
             };
         }
+
+        // Parse the body of the request
+        const requestJSON = JSON.parse(body);
+
+        // replace the values in the original reply with the values in the request
+        // if the value is not provided in the request, use the original value
+        const updatedReply = {
+            id: Number(queryStringParameters.id),
+            content: requestJSON.content ?? originalReply.Item.content,
+            timestamp: originalReply.Item.timestamp,
+            votes: requestJSON.votes ?? originalReply.Item.votes,
+            ttl: originalReply.Item.ttl,
+        };
+
+        // Update the reply in the database using dynamo.update
+        await dynamo
+            .update({
+                TableName: tableName,
+                Key: { id: Number(queryStringParameters.id) },
+                UpdateExpression:
+                    "set content = :content, votes = :votes",
+                ExpressionAttributeValues: {
+                    ":content": updatedReply.content,
+                    ":votes": updatedReply.votes,
+                },
+            })
+            .promise();
+        return {
+            statusCode: 200,
+            body: JSON.stringify(updatedReply),
+        };
+    } else
+    {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({ error: "Missing reply ID" }),
+        };
     }
 }
 
