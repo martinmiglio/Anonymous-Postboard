@@ -15,11 +15,11 @@ const Reply = ({ reply }) => {
     // this function is called when the votes state changes
     console.log(`Updated reply ${reply.id} vote count to ${votes}`);
     // TODO: add a function to update the vote count in the database
-  }, [votes]);
+  }, [votes, reply.id]);
 
   useEffect(() => {
     localStorage.setItem(`r-${reply.id}`, voteStatus);
-  }, [voteStatus]);
+  }, [voteStatus, reply.id]);
 
   const handleUpvote = () => {
     if (voteStatus === "upvoted") {
