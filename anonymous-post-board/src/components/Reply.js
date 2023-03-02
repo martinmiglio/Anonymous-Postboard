@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { formatDistanceToNow } from "date-fns";
 import RepliesAPI from "@/api/replies.js";
@@ -7,17 +7,17 @@ const Vote = dynamic(() => import("./Vote"));
 const Reply = ({ reply }) => {
   const [votes, setVotes] = useState(reply.votes);
   const [voteStatus, setVoteStatus] = useState(
-    localStorage.getItem(`p-${post.id}`)
+    localStorage.getItem(`r-${reply.id}`)
   );
 
   useEffect(() => {
     console.log(`Updated reply ${reply.id} vote count to ${votes}`);
     RepliesAPI.changeReplyVotes(reply.id, votes);
-  }, [votes]);
+  }, [votes, reply.id]);
 
   useEffect(() => {
     localStorage.setItem(`r-${reply.id}`, voteStatus);
-  }, [voteStatus]);
+  }, [voteStatus, reply.id]);
 
   const handleUpvote = () => {
     if (voteStatus === "upvoted") {

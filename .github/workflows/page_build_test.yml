@@ -1,4 +1,4 @@
-name: API Tests
+name: Page Build Tests
 
 on:
   push:
@@ -21,10 +21,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - name: test api/
+      - name: test anonymous-post-board/
         run: |
-          cd api/
+          cd anonymous-post-board/
           npm ci
-          npm test
+          npm run build --if-present
         env:
           CI: true

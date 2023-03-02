@@ -143,6 +143,7 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
             </button>
           </div>
           <textarea
+            autoFocus
             value={content === "" && !focused ? defaultContent : content}
             onChange={handleChange}
             onFocus={handleFocus}

@@ -41,7 +41,7 @@ function Post({ post }) {
     PostsAPI.changePostsVotes(post.id, votes).then((res) => {
       console.log(`Updated post ${res.id} vote count to ${res.votes} `);
     });
-  }, [votes]);
+  }, [votes, firstLoad, post.id]);
 
   useEffect(() => {
     // if status is undefined, remove the item from localStorage
@@ -50,7 +50,7 @@ function Post({ post }) {
     } else {
       localStorage.setItem(`p-${post.id}`, voteStatus);
     }
-  }, [voteStatus]);
+  }, [voteStatus, post.id]);
 
   const handleUpvote = () => {
     if (voteStatus === "upvoted") {
@@ -92,7 +92,16 @@ function Post({ post }) {
       }}
     >
       <div style={{ display: "flex", flexDirection: "row" }}>
-        <div style={{ flexGrow: "1" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            flexGrow: "1",
+            flexShrink: "1",
+            overflow: "auto",
+          }}
+        >
           <p style={{ overflowWrap: "break-word" }}>{post.content}</p>
           <div>
             <p style={{ fontSize: "10px", paddingTop: "0.5rem" }}>
