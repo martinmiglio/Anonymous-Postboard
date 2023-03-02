@@ -32,8 +32,8 @@ export async function makePost(post) {
   return response.data;
 }
 
-export async function changeVotes(id, voteCount) {
-  const obj = {votes: voteCount};
+export async function changePostsVotes(id, voteCount) {
+  const obj = { votes: voteCount };
   const request = {
     method: "patch",
     maxBodyLength: Infinity,

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
-import { changeVotes } from "@/api/posts.js";
-
+import { changePostsVotes } from "@/api/posts.js";
 import { formatDistanceToNow } from "date-fns";
 
 const Vote = dynamic(() => import("./Vote"));
@@ -31,7 +30,7 @@ function Post({ post }) {
       setFirstLoad(false);
       return;
     }
-    changeVotes(post.id, votes).then((res) => {
+    changePostsVotes(post.id, votes).then((res) => {
       console.log(`Updated post ${res.id} vote count to ${res.votes} `);
     });
   }, [votes]);
