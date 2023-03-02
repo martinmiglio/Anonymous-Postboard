@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { makeReply, getRepliesByParentId } from "@/api/replies";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Filter from "bad-words";
@@ -40,10 +41,11 @@ const NewReplyModal = ({
       content: filter.clean(content),
       parentID: parentPost.id,
     };
-    // TODO: send reply to API
-    // makeReply(reply).then((reply) => {
-    setParentReplies([...parentReplies, reply]); // this should really get the replies from the API
-    //});
+    makeReply(reply).then(() => {
+      getRepliesByParentId(parentPost.id).then((newReplies) => {
+        setParentReplies([newReplies]);
+      });
+    });
     onClose();
     setContent("");
   };
