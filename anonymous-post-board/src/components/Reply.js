@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
-
 import { formatDistanceToNow } from "date-fns";
-
+import { changeReplyVotes } from "@/api/replies.js";
 const Vote = dynamic(() => import("./Vote"));
 
 const Reply = ({ reply }) => {
@@ -12,9 +11,8 @@ const Reply = ({ reply }) => {
   );
 
   useEffect(() => {
-    // this function is called when the votes state changes
     console.log(`Updated reply ${reply.id} vote count to ${votes}`);
-    // TODO: add a function to update the vote count in the database
+    changeReplyVotes(reply.id, votes);
   }, [votes]);
 
   useEffect(() => {
