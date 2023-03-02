@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { changePostsVotes } from "@/api/posts.js";
+import { getRepliesByParentId } from "@/api/replies";
 import { formatDistanceToNow } from "date-fns";
 
 const Vote = dynamic(() => import("./Vote"));
@@ -13,7 +14,7 @@ function Post({ post }) {
   const [voteStatus, setVoteStatus] = useState(
     localStorage.getItem(`p-${post.id}`) || undefined
   );
-  const [replies, setReplies] = useState(post.replies);
+  const [replies, setReplies] = useState([]);
   const [showNewReplyModal, setShowNewReplyModal] = useState(false);
 
   const handleNewReply = () => {
@@ -23,6 +24,13 @@ function Post({ post }) {
   const handleCloseNewReplyModal = () => {
     setShowNewReplyModal(false);
   };
+
+  useEffect(() => {
+    // get the latest replies from the API
+    getRepliesByParentId(post.id).then((latestReplies) => {
+      setReplies(latestReplies);
+    });
+  }, []);
 
   useEffect(() => {
     // don't update votes on first load
