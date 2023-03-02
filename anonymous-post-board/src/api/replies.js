@@ -1,22 +1,18 @@
 import axios from "axios";
 
-import { API_URL } from "./api.config.js";
+import { API_URL, REQUEST_TIMEOUT, MAX_RETRIES } from "./api.config.js";
+import { handleNetworkError, handleTooManyRequests } from "./errorHandlers.js";
 
 class RepliesAPI {
-  constructor() {
-    this.MAX_RETRIES = 5;
-    this.REQUEST_TIMEOUT = 1000;
-  }
-
-  @handleTooManyRequests(this.REQUEST_TIMEOUT)
-  @handleNetworkError(this.MAX_RETRIES)
+  @handleTooManyRequests(REQUEST_TIMEOUT)
+  @handleNetworkError(MAX_RETRIES)
   async getReplyById(id) {
     const response = await axios.get(`${API_URL}/replies?id=${id}`);
     return response.data;
   }
 
-  @handleTooManyRequests(this.REQUEST_TIMEOUT)
-  @handleNetworkError(this.MAX_RETRIES)
+  @handleTooManyRequests(REQUEST_TIMEOUT)
+  @handleNetworkError(MAX_RETRIES)
   async getRepliesByParentId(parent_id) {
     const response = await axios.get(
       `${API_URL}/replies?parent_id=${parent_id}`
@@ -24,8 +20,8 @@ class RepliesAPI {
     return response.data;
   }
 
-  @handleTooManyRequests(this.REQUEST_TIMEOUT)
-  @handleNetworkError(this.MAX_RETRIES)
+  @handleTooManyRequests(REQUEST_TIMEOUT)
+  @handleNetworkError(MAX_RETRIES)
   async makeReply(reply) {
     const request = {
       method: "put",
@@ -40,8 +36,8 @@ class RepliesAPI {
     return response.data;
   }
 
-  @handleTooManyRequests(this.REQUEST_TIMEOUT)
-  @handleNetworkError(this.MAX_RETRIES)
+  @handleTooManyRequests(REQUEST_TIMEOUT)
+  @handleNetworkError(MAX_RETRIES)
   async changeReplyVotes(id, voteCount) {
     const obj = { votes: voteCount };
     const request = {
