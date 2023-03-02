@@ -42,6 +42,7 @@ const NewReplyModal = ({
       parentID: parentPost.id,
     };
     makeReply(reply).then(() => {
+      setParentReplies([...parentReplies,  reply]);
       getRepliesByParentId(parentPost.id).then((newReplies) => {
         setParentReplies([newReplies]);
       });
