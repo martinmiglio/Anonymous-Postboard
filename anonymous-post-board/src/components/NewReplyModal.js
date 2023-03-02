@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { makeReply, getRepliesByParentId } from "@/api/replies";
+import RepliesAPI from "@/api/replies";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Filter from "bad-words";
@@ -41,9 +41,9 @@ const NewReplyModal = ({
       content: filter.clean(content),
       parentID: parentPost.id,
     };
-    makeReply(reply).then(() => {
+    RepliesAPI.makeReply(reply).then(() => {
       setParentReplies([...parentReplies,  reply]);
-      getRepliesByParentId(parentPost.id).then((newReplies) => {
+      RepliesAPI.getRepliesByParentId(parentPost.id).then((newReplies) => {
         setParentReplies([newReplies]);
       });
     });

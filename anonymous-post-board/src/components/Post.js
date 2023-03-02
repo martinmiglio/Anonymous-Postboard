@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
-import { changePostsVotes } from "@/api/posts.js";
-import { getRepliesByParentId } from "@/api/replies";
+import PostsAPI from "@/api/posts.js";
+import RepliesAPI from "@/api/replies";
 import { formatDistanceToNow } from "date-fns";
 
 const Vote = dynamic(() => import("./Vote"));
@@ -27,7 +27,7 @@ function Post({ post }) {
 
   useEffect(() => {
     // get the latest replies from the API
-    getRepliesByParentId(post.id).then((latestReplies) => {
+    RepliesAPI.getRepliesByParentId(post.id).then((latestReplies) => {
       setReplies(latestReplies);
     });
   }, []);
@@ -38,7 +38,7 @@ function Post({ post }) {
       setFirstLoad(false);
       return;
     }
-    changePostsVotes(post.id, votes).then((res) => {
+    PostsAPI.changePostsVotes(post.id, votes).then((res) => {
       console.log(`Updated post ${res.id} vote count to ${res.votes} `);
     });
   }, [votes]);

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import { formatDistanceToNow } from "date-fns";
-import { changeReplyVotes } from "@/api/replies.js";
+import RepliesAPI from "@/api/replies.js";
 const Vote = dynamic(() => import("./Vote"));
 
 const Reply = ({ reply }) => {
@@ -12,7 +12,7 @@ const Reply = ({ reply }) => {
 
   useEffect(() => {
     console.log(`Updated reply ${reply.id} vote count to ${votes}`);
-    changeReplyVotes(reply.id, votes);
+    RepliesAPI.changeReplyVotes(reply.id, votes);
   }, [votes]);
 
   useEffect(() => {
