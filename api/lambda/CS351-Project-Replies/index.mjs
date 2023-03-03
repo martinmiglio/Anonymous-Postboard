@@ -122,7 +122,25 @@ async function getReplies(event)
 async function putReplies(event) {
     const RETENTION_PERIOD = 60 * 60 * 24 * 30; // 30 days
     const { body } = event;
-    const requestJSON = JSON.parse(body);
+    if (!body)
+    {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({ message: "Missing request body" }),
+        };
+    }
+    let requestJSON;
+    try
+    {
+        requestJSON = JSON.parse(body);
+    }
+    catch (error)
+    {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({ message: "Invalid request body" }),
+        };
+    }
     // Get the parent post to check if it exists
     const parentPost = await dynamo.get({
         TableName: postsTableName,
