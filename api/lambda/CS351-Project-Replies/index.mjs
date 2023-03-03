@@ -43,31 +43,39 @@ export const handler = async (event) => {
 async function getReplies(event) {
     const { queryStringParameters } = event;
     const parent_id = queryStringParameters.parent_id;
-
-    const params = {
-        TableName: 'cs351-project-posts',
-        IndexName: 'parent_id-index', // Use the parent_id-index GSI
-        KeyConditionExpression: 'parent_id = :pid',
-        ExpressionAttributeValues: {
-            ':pid': parent_id,
-        },
-        ScanIndexForward: false, // Sort results in descending order by default
-    };
-
-    try {
-        const result = await dynamo.query(params).promise();
-        return {
-            statusCode: 200,
-            body: JSON.stringify(result.Items),
-        };
-    } catch (error) {
-        console.error(error);
-        return {
-            statusCode: 500,
-            body: JSON.stringify({ message: 'Failed to retrieve replies' }),
-        };
+    
+    // Verify parent_id exists
+    if (!parent_id) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: "Missing parent_id parameter" }),
+      };
     }
-}
+  
+    // Retrieve all replies with the specified parent_id
+    const params = {
+      TableName: 'cs351-project-posts',
+      KeyConditionExpression: 'parent_id = :parent_id_val',
+      ExpressionAttributeValues: {
+        ':parent_id_val': parent_id
+      }
+    };
+  
+    try {
+      const result = await dynamo.query(params).promise();
+      return {
+        statusCode: 200,
+        body: JSON.stringify(result.Items.sort((a, b) => b.timestamp - a.timestamp)),
+      };
+    } catch (error) {
+      console.error(error);
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ message: 'Failed to retrieve replies' }),
+      };
+    }
+  }
+  
 
 
 async function putReplies(event) {
@@ -113,13 +121,9 @@ async function putReplies(event) {
 
 
 
-async function patchReplies(event)
-{
-    // Update an existing reply
-    const { body, queryStringParameters } = event;
-
-    if (queryStringParameters && queryStringParameters.id)
-    {
+async function patchReplies(event) {
+    // Update an existing post
+    if (queryStringParameters && queryStringParameters.id) {
         // get the existing reply from the database
         const originalReply = await dynamo
             .get({
@@ -128,8 +132,7 @@ async function patchReplies(event)
             })
             .promise();
 
-        if (!originalReply.Item)
-        {
+        if (!originalReply.Item) {
             // If the reply does not exist, return an error
             return {
                 statusCode: 513,
@@ -169,14 +172,14 @@ async function patchReplies(event)
             statusCode: 200,
             body: JSON.stringify(updatedReply),
         };
-    } else
-    {
+    } else {
         return {
             statusCode: 400,
             body: JSON.stringify({ error: "Missing reply ID" }),
         };
     }
 }
+
 
 async function deleteReplies(event) {
     const { queryStringParameters } = event;
