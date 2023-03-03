@@ -6,6 +6,7 @@ import AWS from "aws-sdk";
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
 const tableName = "cs351-project-replies";
+const postsTableName = "cs351-project-posts";
 
 export const handler = async (event) => {
     try {
@@ -58,7 +59,7 @@ async function getReplies(event)
     if (id)
     {
         const params = {
-            TableName: 'cs351-project-posts',
+            TableName: tableName,
             Key: { id: Number(id) },
         };
 
@@ -85,7 +86,8 @@ async function getReplies(event)
     {
         // Retrieve all replies with the specified parent_id
         const params = {
-            TableName: 'cs351-project-posts',
+            TableName: tableName,
+            IndexName: 'parent_id-index',
             KeyConditionExpression: 'parent_id = :parent_id_val',
             ExpressionAttributeValues: {
                 ':parent_id_val': parent_id
@@ -123,7 +125,7 @@ async function putReplies(event) {
     const requestJSON = JSON.parse(body);
     // Get the parent post to check if it exists
     const parentPost = await dynamo.get({
-        TableName: 'cs351-project-posts',
+        TableName: postsTableName,
         Key: { id: requestJSON.parent_id },
     }).promise();
     // Return an error response if the parent post does not exist
@@ -134,7 +136,7 @@ async function putReplies(event) {
         };
     }
     // Create a new post
-    const newPost = {
+    const newReply = {
         id: Date.now(), // id should be generated to avoid collisions
         parent_id: requestJSON.parent_id,
         content: requestJSON.content ?? "",
@@ -144,13 +146,13 @@ async function putReplies(event) {
     };
     // Add the new post to the database
     await dynamo.put({
-        TableName: 'cs351-project-posts',
-        Item: newPost,
+        TableName: tableName,
+        Item: newReply,
     }).promise();
     // Return the newly created post as read from the database
     const result = await dynamo.get({
-        TableName: 'cs351-project-posts',
-        Key: { id: newPost.id },
+        TableName: tableName,
+        Key: { id: newReply.id },
     }).promise();
     return {
         statusCode: 200,
