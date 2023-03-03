@@ -39,43 +39,82 @@ export const handler = async (event) => {
 };
 
 
-//Functions 
-async function getReplies(event) {
+//Functions
+async function getReplies(event)
+{
     const { queryStringParameters } = event;
-    const parent_id = queryStringParameters.parent_id;
-    
-    // Verify parent_id exists
-    if (!parent_id) {
-      return {
+
+    if (!queryStringParameters)
+    {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({ message: "Missing query string parameters" }),
+        };
+    }
+
+    const { id, parent_id } = queryStringParameters;
+
+    // if id is specified, return the reply with the specified id
+    if (id)
+    {
+        const params = {
+            TableName: 'cs351-project-posts',
+            Key: { id: Number(id) },
+        };
+
+        try
+        {
+            const result = await dynamo.get(params).promise();
+            return {
+                statusCode: 200,
+                body: JSON.stringify(result.Item),
+            };
+        }
+        catch (error)
+        {
+            console.error(error);
+            return {
+                statusCode: 500,
+                body: JSON.stringify({ message: 'Failed to retrieve reply' }),
+            };
+        }
+    }
+
+    // if parent_id is specified, return all replies with the specified parent_id
+    else if (parent_id)
+    {
+        // Retrieve all replies with the specified parent_id
+        const params = {
+            TableName: 'cs351-project-posts',
+            KeyConditionExpression: 'parent_id = :parent_id_val',
+            ExpressionAttributeValues: {
+                ':parent_id_val': parent_id
+            }
+        };
+
+        try
+        {
+            const result = await dynamo.query(params).promise();
+            return {
+                statusCode: 200,
+                body: JSON.stringify(result.Items.sort((a, b) => a.timestamp - b.timestamp)),
+            };
+        } catch (error)
+        {
+            console.error(error);
+            return {
+                statusCode: 500,
+                body: JSON.stringify({ message: 'Failed to retrieve replies' }),
+            };
+        }
+    }
+
+    return {
         statusCode: 400,
-        body: JSON.stringify({ message: "Missing parent_id parameter" }),
-      };
-    }
-  
-    // Retrieve all replies with the specified parent_id
-    const params = {
-      TableName: 'cs351-project-posts',
-      KeyConditionExpression: 'parent_id = :parent_id_val',
-      ExpressionAttributeValues: {
-        ':parent_id_val': parent_id
-      }
+        body: JSON.stringify({ message: "Missing or invalid query string parameters" }),
     };
-  
-    try {
-      const result = await dynamo.query(params).promise();
-      return {
-        statusCode: 200,
-        body: JSON.stringify(result.Items.sort((a, b) => b.timestamp - a.timestamp)),
-      };
-    } catch (error) {
-      console.error(error);
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ message: 'Failed to retrieve replies' }),
-      };
-    }
-  }
-  
+}
+
 
 
 async function putReplies(event) {
