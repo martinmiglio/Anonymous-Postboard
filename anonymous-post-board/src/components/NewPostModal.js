@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faTimes } from "@fortawesome/free-solid-svg-icons";
 import PostAPI from "@/api/posts.js";
@@ -9,14 +9,33 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
   const defaultContent = "What's on your mind?";
   const maxContentLength = 280;
 
+  const animationDuration = 200;
+
   const filter = new Filter();
 
   const [content, setContent] = useState("");
+  const [contentLength, setContentLength] = useState(0);
   const [focused, setFocused] = useState(false);
   const [postError, setPostError] = useState(false);
+  const [sentPostAnimation, setSentPostAnimation] = useState(false);
+  const [colsedAnimation, setClosedAnimation] = useState(false);
 
-  const contentLenght = new Graphemer().countGraphemes(content);
-  const isTooLong = contentLenght > maxContentLength;
+  useEffect(() => {
+    if (sentPostAnimation) {
+      setTimeout(() => {
+        setSentPostAnimation(false);
+      }, animationDuration);
+    }
+    if (colsedAnimation) {
+      setTimeout(() => {
+        setClosedAnimation(false);
+      }, animationDuration);
+    }
+  }, [sentPostAnimation, colsedAnimation]);
+
+  useEffect(() => {
+    setContentLength(new Graphemer().countGraphemes(content));
+  }, [content]);
 
   const handleChange = (event) => {
     setContent(event.target.value);
@@ -24,13 +43,14 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (content === "" || isTooLong) {
+    if (content === "" || contentLength > maxContentLength) {
       setPostError(true);
       setTimeout(() => {
         setPostError(false);
       }, 500);
       return;
     }
+    setSentPostAnimation(true);
     const post = { content: filter.clean(content) };
     PostAPI.makePost(post).then((post) => {
       setNewPostID(post.id);
@@ -40,6 +60,7 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
   };
 
   const handleClose = () => {
+    setClosedAnimation(true);
     onClose();
     setContent("");
   };
@@ -58,7 +79,7 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: "80%",
-    maxWidth: "600px",
+    maxWidth: "580px",
     padding: "1rem",
     zIndex: 1000,
     borderRadius: "16px",
@@ -96,11 +117,13 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
     color: "white",
     width: "24px",
     height: "24px",
+    "--fa-beat-scale": "0.9",
+    "--fa-animation-duration": `${animationDuration}ms`,
   };
 
   const contentLengthStyle = {
-    color: isTooLong ? "indianred" : "white",
-    opacity: String(0.5 + 0.5 * (contentLenght / maxContentLength)),
+    color: contentLength > maxContentLength ? "indianred" : "white",
+    opacity: String(0.5 + 0.5 * (contentLength / maxContentLength)),
     fontSize: "0.8em",
     textAlign: "right",
   };
@@ -153,7 +176,7 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
             rows="3"
           />
           <p style={contentLengthStyle}>
-            {contentLenght}/{maxContentLength}
+            {contentLength}/{maxContentLength}
           </p>
         </form>
       </div>
