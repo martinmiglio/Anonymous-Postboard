@@ -122,6 +122,7 @@ async function putReplies(event) {
 
 
 async function patchReplies(event) {
+    const { queryStringParameters, body } = event;
     // Update an existing post
     if (queryStringParameters && queryStringParameters.id) {
         // get the existing reply from the database
