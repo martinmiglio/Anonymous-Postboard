@@ -8,10 +8,13 @@ const dynamo = new AWS.DynamoDB.DocumentClient();
 const tableName = "cs351-project-replies";
 const postsTableName = "cs351-project-posts";
 
-export const handler = async (event) => {
-    try {
+export const handler = async (event) =>
+{
+    try
+    {
         const httpMethod = event.httpMethod;
-        switch (httpMethod) {
+        switch (httpMethod)
+        {
             case "GET":
                 return getReplies(event);
             case "PUT":
@@ -31,7 +34,8 @@ export const handler = async (event) => {
                     }),
                 };
         }
-    } catch (error) {
+    } catch (error)
+    {
         return {
             statusCode: 512,
             body: JSON.stringify(error, Object.getOwnPropertyNames(error)),
@@ -119,7 +123,8 @@ async function getReplies(event)
 
 
 
-async function putReplies(event) {
+async function putReplies(event)
+{
     const RETENTION_PERIOD = 60 * 60 * 24 * 30; // 30 days
     const { body } = event;
     if (!body)
@@ -147,7 +152,8 @@ async function putReplies(event) {
         Key: { id: requestJSON.parent_id },
     }).promise();
     // Return an error response if the parent post does not exist
-    if (!parentPost || !parentPost.Item) {
+    if (!parentPost || !parentPost.Item)
+    {
         return {
             statusCode: 400,
             body: JSON.stringify({ message: "Parent post does not exist" }),
@@ -180,10 +186,12 @@ async function putReplies(event) {
 
 
 
-async function patchReplies(event) {
+async function patchReplies(event)
+{
     const { queryStringParameters, body } = event;
     // Update an existing post
-    if (queryStringParameters && queryStringParameters.id) {
+    if (queryStringParameters && queryStringParameters.id)
+    {
         // get the existing reply from the database
         const originalReply = await dynamo
             .get({
@@ -192,7 +200,8 @@ async function patchReplies(event) {
             })
             .promise();
 
-        if (!originalReply.Item) {
+        if (!originalReply.Item)
+        {
             // If the reply does not exist, return an error
             return {
                 statusCode: 513,
@@ -232,7 +241,8 @@ async function patchReplies(event) {
             statusCode: 200,
             body: JSON.stringify(updatedReply),
         };
-    } else {
+    } else
+    {
         return {
             statusCode: 400,
             body: JSON.stringify({ error: "Missing reply ID" }),
@@ -241,10 +251,12 @@ async function patchReplies(event) {
 }
 
 
-async function deleteReplies(event) {
+async function deleteReplies(event)
+{
     const { queryStringParameters } = event;
     // Check if the id parameter is specified
-    if (!queryStringParameters || !queryStringParameters.id) {
+    if (!queryStringParameters || !queryStringParameters.id)
+    {
         return {
             statusCode: 400,
             body: JSON.stringify({ error: "Missing id parameter" }),
@@ -262,7 +274,8 @@ async function deleteReplies(event) {
 }
 
 
-async function handleOptions(event, context) {
+async function handleOptions(event, context)
+{
     // Return the allowed methods for CORS
     return {
         statusCode: 200,
