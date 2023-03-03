@@ -54,8 +54,17 @@ const Reply = ({ reply }) => {
       }}
     >
       <div style={{ display: "flex", flexDirection: "row" }}>
-        <div style={{ flexGrow: "1" }}>
-          <p>{reply.content}</p>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            flexGrow: "1",
+            flexShrink: "1",
+            overflow: "auto",
+          }}
+        >
+          <p style={{ overflowWrap: "break-word" }}>{reply.content}</p>
           <p style={{ fontSize: "10px", paddingTop: "0.2rem" }}>
             By Anonymous User
           </p>
