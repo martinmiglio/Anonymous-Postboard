@@ -155,7 +155,7 @@ async function putReplies(event)
     // Get the parent post to check if it exists
     const parentPost = await dynamo.get({
         TableName: postsTableName,
-        Key: { id: requestJSON.parent_id },
+        Key: { id: Number(requestJSON.parent_id) },
     }).promise();
     // Return an error response if the parent post does not exist
     if (!parentPost || !parentPost.Item)
