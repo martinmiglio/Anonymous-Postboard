@@ -39,7 +39,7 @@ const NewReplyModal = ({
     }
     const reply = {
       content: filter.clean(content),
-      parentID: parentPost.id,
+      parent_id: parentPost.id,
     };
     RepliesAPI.makeReply(reply).then(() => {
       setParentReplies([...parentReplies,  reply]);
