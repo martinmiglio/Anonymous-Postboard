@@ -70,10 +70,16 @@ async function getReplies(event)
         try
         {
             const result = await dynamo.get(params).promise();
-            return {
-                statusCode: 200,
-                body: JSON.stringify(result.Item),
-            };
+            if (result.Item)
+                return {
+                    statusCode: 200,
+                    body: JSON.stringify(result.Item),
+                };
+            else
+                return {
+                    statusCode: 404,
+                    body: JSON.stringify({ message: 'Reply not found' }),
+                };
         }
         catch (error)
         {
@@ -94,7 +100,7 @@ async function getReplies(event)
             IndexName: 'parent_id-index',
             KeyConditionExpression: 'parent_id = :parent_id_val',
             ExpressionAttributeValues: {
-                ':parent_id_val': parent_id
+                ':parent_id_val': Number(parent_id)
             }
         };
 
@@ -162,7 +168,7 @@ async function putReplies(event)
     // Create a new post
     const newReply = {
         id: Date.now(), // id should be generated to avoid collisions
-        parent_id: requestJSON.parent_id,
+        parent_id: Number(requestJSON.parent_id),
         content: requestJSON.content ?? "",
         timestamp: requestJSON.timestamp ?? Date.now(),
         votes: requestJSON.votes ?? 0,
