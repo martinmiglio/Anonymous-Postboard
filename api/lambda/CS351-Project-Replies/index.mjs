@@ -224,6 +224,7 @@ async function patchReplies(event)
         // if the value is not provided in the request, use the original value
         const updatedReply = {
             id: Number(queryStringParameters.id),
+            parent_id: originalReply.Item.parent_id,
             content: requestJSON.content ?? originalReply.Item.content,
             timestamp: originalReply.Item.timestamp,
             votes: requestJSON.votes ?? originalReply.Item.votes,
