@@ -232,9 +232,15 @@ async function handlePatch(event, context)
 
 async function handleDelete(event, context)
 {
-  // Delete an existing post
   const { queryStringParameters } = event;
-  if (queryStringParameters && queryStringParameters.id)
+  if (!queryStringParameters || !queryStringParameters.id)
+  {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ error: "Missing id parameter" }),
+    };
+  }
+  try
   {
     await dynamo
       .delete({
@@ -246,13 +252,15 @@ async function handleDelete(event, context)
       statusCode: 200,
       body: JSON.stringify({ success: true }),
     };
-  } else
+  }
+  catch (error)
   {
     return {
-      statusCode: 400,
-      body: JSON.stringify({ error: "Missing post ID" }),
+      statusCode: 500,
+      body: JSON.stringify({ message: 'Failed to delete reply' }),
     };
   }
+
 }
 
 async function handleOptions(event, context)
