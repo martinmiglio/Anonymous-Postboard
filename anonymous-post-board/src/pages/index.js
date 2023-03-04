@@ -22,9 +22,11 @@ export default function Home() {
   }, [newPostID]);
 
   async function fetchData() {
-    const latestPosts = await PostAPI.getLatestPosts();
-    setPosts(latestPosts);
-    setHasMorePosts(true);
+    setPosts([]);
+    PostAPI.getLatestPosts().then((latestPosts) => {
+      setPosts(latestPosts);
+      setHasMorePosts(true);
+    });
   }
 
   const handleNewPost = () => {
