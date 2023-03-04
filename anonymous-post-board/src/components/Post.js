@@ -85,7 +85,6 @@ function Post({ post }) {
         borderWidth: "1px",
         borderColor: "grey",
         padding: "10px",
-        width: "calc(100vw - 20px)",
         maxWidth: "600px",
       }}
     >

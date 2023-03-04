@@ -57,11 +57,7 @@ const Reply = ({ reply }) => {
   };
 
   return (
-    <div
-      style={{
-        margin: "10px",
-      }}
-    >
+    <div style={{ margin: "10px 0 0 10px" }}>
       <div style={{ display: "flex", flexDirection: "row" }}>
         <div
           style={{
