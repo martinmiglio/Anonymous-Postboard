@@ -6,14 +6,21 @@ import dynamic from "next/dynamic";
 const PostList = dynamic(() => import("@/components/PostList.js"));
 const Banner = dynamic(() => import("@/components/Banner.js"));
 const NewPostModal = dynamic(() => import("@/components/NewPostModal.js"));
+const FirstVisitModal = dynamic(() =>
+  import("@/components/FirstVisitModal.js")
+);
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
   const [hasMorePosts, setHasMorePosts] = useState(true);
   const [showNewPostModal, setShowNewPostModal] = useState(false);
   const [newPostID, setNewPostID] = useState(-1);
+  const [showFirstVisitModal, setShowFirstVisitModal] = useState(false);
 
   useEffect(() => {
+    if (localStorage.getItem("firstVisit") === null) {
+      setShowFirstVisitModal(true);
+    }
     fetchData();
   }, []);
 
@@ -30,11 +37,18 @@ export default function Home() {
   }
 
   const handleNewPost = () => {
-    setShowNewPostModal(true);
+    if (!showFirstVisitModal) {
+      setShowNewPostModal(true);
+    }
   };
 
-  const handleCloseModal = () => {
+  const handleCloseNewPostModal = () => {
     setShowNewPostModal(false);
+  };
+
+  const handleCloseFirstVisitModal = () => {
+    setShowFirstVisitModal(false);
+    localStorage.setItem("firstVisit", "false");
   };
 
   async function loadMorePosts() {
@@ -53,12 +67,18 @@ export default function Home() {
       <Banner onRefresh={fetchData} onNewPost={handleNewPost} />
       <NewPostModal
         isOpen={showNewPostModal}
-        onClose={handleCloseModal}
+        onClose={handleCloseNewPostModal}
         setNewPostID={setNewPostID}
+      />
+      <FirstVisitModal
+        isOpen={showFirstVisitModal}
+        onClose={handleCloseFirstVisitModal}
       />
       <div
         className={styles.content}
-        style={{ filter: showNewPostModal ? "blur(5px)" : null }}
+        style={{
+          filter: showNewPostModal || showFirstVisitModal ? "blur(5px)" : null,
+        }}
       >
         <PostList
           posts={posts}
