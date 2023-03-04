@@ -9,6 +9,7 @@ const NewPostModal = dynamic(() => import("@/components/NewPostModal.js"));
 const FirstVisitModal = dynamic(() =>
   import("@/components/FirstVisitModal.js")
 );
+const MorePostsModal = dynamic(() => import("@/components/MorePostsModal.js"));
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
@@ -25,6 +26,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    if (newPostID === -1) return;
     fetchData();
   }, [newPostID]);
 
@@ -65,6 +67,7 @@ export default function Home() {
   return (
     <div className={styles.centerpane}>
       <Banner onRefresh={fetchData} onNewPost={handleNewPost} />
+      <MorePostsModal interval={"10000"} posts={posts} onRefresh={fetchData} />
       <NewPostModal
         isOpen={showNewPostModal}
         onClose={handleCloseNewPostModal}

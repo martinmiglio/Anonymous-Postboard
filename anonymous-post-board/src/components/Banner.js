@@ -47,7 +47,7 @@ const Banner = ({ onRefresh, onNewPost }) => {
         left: 0,
         right: 0,
         height: "50px",
-        zIndex: 1,
+        zIndex: 500,
       }}
     >
       <h1>Anonymous Post Board</h1>
