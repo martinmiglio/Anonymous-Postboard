@@ -40,11 +40,13 @@ const NewReplyModal = ({
     const reply = {
       content: filter.clean(content),
       parent_id: parentPost.id,
+      votes: 0,
+      id: 0,
     };
     RepliesAPI.makeReply(reply).then(() => {
-      setParentReplies([...parentReplies,  reply]);
+      setParentReplies([...parentReplies, reply]);
       RepliesAPI.getRepliesByParentId(parentPost.id).then((newReplies) => {
-        setParentReplies([newReplies]);
+        setParentReplies(newReplies);
       });
     });
     onClose();
