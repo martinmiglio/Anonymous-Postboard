@@ -261,7 +261,6 @@ async function patchReplies(event)
 async function deleteReplies(event)
 {
     const { queryStringParameters } = event;
-    // Check if the id parameter is specified
     if (!queryStringParameters || !queryStringParameters.id)
     {
         return {
@@ -269,15 +268,26 @@ async function deleteReplies(event)
             body: JSON.stringify({ error: "Missing id parameter" }),
         };
     }
-    const id = Number(queryStringParameters.id);
-    // Delete the reply with the specified id
-    await dynamo
-        .delete({
-            TableName: tableName,
-            Key: { id: id },
-        })
-        .promise();
-    return { statusCode: 200, body: JSON.stringify({ message: `Reply with id ${id} deleted` }) };
+    try
+    {
+        await dynamo
+            .delete({
+                TableName: tableName,
+                Key: { id: Number(queryStringParameters.id) },
+            })
+            .promise();
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ success: true }),
+        };
+    }
+    catch (error)
+    {
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ message: 'Failed to delete reply' }),
+        };
+    }
 }
 
 
