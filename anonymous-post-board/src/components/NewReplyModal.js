@@ -1,41 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import RepliesAPI from "@/api/replies";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faTimes } from "@fortawesome/free-solid-svg-icons";
-import PostsAPI from "@/api/posts.js";
 import Filter from "bad-words";
 import Graphemer from "graphemer";
 
-const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
+const NewReplyModal = ({
+  parentPost,
+  isOpen,
+  onClose,
+  parentReplies,
+  setParentReplies,
+}) => {
   const defaultContent = "What's on your mind?";
   const maxContentLength = 280;
-
-  const animationDuration = 200;
 
   const filter = new Filter();
 
   const [content, setContent] = useState("");
-  const [contentLength, setContentLength] = useState(0);
   const [focused, setFocused] = useState(false);
   const [postError, setPostError] = useState(false);
-  const [sentPostAnimation, setSentPostAnimation] = useState(false);
-  const [colsedAnimation, setClosedAnimation] = useState(false);
 
-  useEffect(() => {
-    if (sentPostAnimation) {
-      setTimeout(() => {
-        setSentPostAnimation(false);
-      }, animationDuration);
-    }
-    if (colsedAnimation) {
-      setTimeout(() => {
-        setClosedAnimation(false);
-      }, animationDuration);
-    }
-  }, [sentPostAnimation, colsedAnimation]);
-
-  useEffect(() => {
-    setContentLength(new Graphemer().countGraphemes(content));
-  }, [content]);
+  const contentLenght = new Graphemer().countGraphemes(content);
+  const isTooLong = contentLenght > maxContentLength;
 
   const handleChange = (event) => {
     setContent(event.target.value);
@@ -43,24 +30,30 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (content === "" || contentLength > maxContentLength) {
+    if (content === "" || isTooLong) {
       setPostError(true);
       setTimeout(() => {
         setPostError(false);
       }, 500);
       return;
     }
-    setSentPostAnimation(true);
-    const post = { content: filter.clean(content) };
-    PostsAPI.makePost(post).then((post) => {
-      setNewPostID(post.id);
+    const reply = {
+      content: filter.clean(content),
+      parent_id: parentPost.id,
+      votes: 0,
+      id: 0,
+    };
+    RepliesAPI.makeReply(reply).then(() => {
+      setParentReplies([...parentReplies, reply]);
+      RepliesAPI.getRepliesByParentId(parentPost.id).then((newReplies) => {
+        setParentReplies(newReplies);
+      });
     });
     onClose();
     setContent("");
   };
 
   const handleClose = () => {
-    setClosedAnimation(true);
     onClose();
     setContent("");
   };
@@ -74,19 +67,14 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
   };
 
   const modalStyle = {
-    position: "fixed",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: "80%",
-    maxWidth: "580px",
+    marginTop: "1rem",
     padding: "1rem",
-    zIndex: 1000,
+    zIndex: 900,
     borderRadius: "16px",
     background: "black",
     borderStyle: "solid",
     borderWidth: "1px",
-    borderColor: "white",
+    borderColor: "grey",
   };
 
   const textBoxStyle = {
@@ -117,13 +105,11 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
     color: "white",
     width: "24px",
     height: "24px",
-    "--fa-beat-scale": "0.9",
-    "--fa-animation-duration": `${animationDuration}ms`,
   };
 
   const contentLengthStyle = {
-    color: contentLength > maxContentLength ? "indianred" : "white",
-    opacity: String(0.5 + 0.5 * (contentLength / maxContentLength)),
+    color: isTooLong ? "indianred" : "white",
+    opacity: String(0.5 + 0.5 * (contentLenght / maxContentLength)),
     fontSize: "0.8em",
     textAlign: "right",
   };
@@ -173,10 +159,10 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
             onBlur={handleBlur}
             style={textBoxStyle}
             spellCheck="true"
-            rows="3"
+            rows="2"
           />
           <p style={contentLengthStyle}>
-            {contentLength}/{maxContentLength}
+            {contentLenght}/{maxContentLength}
           </p>
         </form>
       </div>
@@ -184,4 +170,4 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
   );
 };
 
-export default NewPostModal;
+export default NewReplyModal;

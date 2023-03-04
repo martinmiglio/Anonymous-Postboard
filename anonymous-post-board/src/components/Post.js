@@ -1,19 +1,36 @@
 import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
-import PostAPI from "@/api/posts.js";
-
+import PostsAPI from "@/api/posts.js";
+import RepliesAPI from "@/api/replies";
 import { formatDistanceToNow } from "date-fns";
 
 const Vote = dynamic(() => import("./Vote"));
 const ReplyList = dynamic(() => import("./ReplyList"));
+const NewReplyModal = dynamic(() => import("./NewReplyModal"));
 
 function Post({ post }) {
   const [firstLoad, setFirstLoad] = useState(true);
   const [votes, setVotes] = useState(Number(post.votes));
-  const [replies, setReplies] = useState(post.replies);
   const [voteStatus, setVoteStatus] = useState(
     localStorage.getItem(`p-${post.id}`) || undefined
   );
+  const [replies, setReplies] = useState([]);
+  const [showNewReplyModal, setShowNewReplyModal] = useState(false);
+
+  const handleNewReply = () => {
+    setShowNewReplyModal(true);
+  };
+
+  const handleCloseNewReplyModal = () => {
+    setShowNewReplyModal(false);
+  };
+
+  useEffect(() => {
+    // get the latest replies from the API
+    RepliesAPI.getRepliesByParentId(post.id).then((latestReplies) => {
+      setReplies(latestReplies);
+    });
+  }, []);
 
   useEffect(() => {
     // don't update votes on first load
@@ -21,7 +38,7 @@ function Post({ post }) {
       setFirstLoad(false);
       return;
     }
-    PostAPI.changeVotes(post.id, votes).then((res) => {
+    PostsAPI.changePostsVotes(post.id, votes).then((res) => {
       console.log(`Updated post ${res.id} vote count to ${res.votes} `);
     });
   }, [votes, post.id]);
@@ -100,15 +117,21 @@ function Post({ post }) {
                   addSuffix: true,
                 })}
               </p>
-              <p
-                style={{
-                  fontSize: "10px",
-                  paddingRight: "10px",
-                  cursor: "pointer",
-                }}
-              >
-                Reply
-              </p>
+              {!showNewReplyModal && (
+                <button
+                  style={{
+                    fontSize: "10px",
+                    paddingRight: "10px",
+                    cursor: "pointer",
+                    backgroundColor: "transparent",
+                    border: "none",
+                    color: "white",
+                  }}
+                  onClick={handleNewReply}
+                >
+                  Reply
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -120,6 +143,13 @@ function Post({ post }) {
         />
       </div>
       <ReplyList replies={replies ?? []} />
+      <NewReplyModal
+        isOpen={showNewReplyModal}
+        onClose={handleCloseNewReplyModal}
+        parentPost={post}
+        parentReplies={replies}
+        setParentReplies={setReplies}
+      />
     </div>
   );
 }

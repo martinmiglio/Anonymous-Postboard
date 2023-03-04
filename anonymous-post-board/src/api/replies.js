@@ -3,42 +3,34 @@ import axios from "axios";
 import { API_URL, REQUEST_TIMEOUT, MAX_RETRIES } from "./api.config.js";
 import { handleNetworkError, handleTooManyRequests } from "./errorHandlers.js";
 
-class PostsAPI {
+class RepliesAPI {
   @handleTooManyRequests(REQUEST_TIMEOUT)
   @handleNetworkError(MAX_RETRIES)
-  async getPostById(id) {
-    const response = await axios.get(`${API_URL}/posts?id=${id}`);
+  async getReplyById(id) {
+    const response = await axios.get(`${API_URL}/replies?id=${id}`);
     return response.data;
   }
 
   @handleTooManyRequests(REQUEST_TIMEOUT)
   @handleNetworkError(MAX_RETRIES)
-  async getLatestPosts() {
-    const response = await axios.get(`${API_URL}/posts?latest=true`);
-    return response.data;
-  }
-
-  @handleTooManyRequests(REQUEST_TIMEOUT)
-  @handleNetworkError(MAX_RETRIES)
-  async fetchMorePosts(before) {
-    // fetch the next set of posts before the specified ID
+  async getRepliesByParentId(parent_id) {
     const response = await axios.get(
-      `${API_URL}/posts?before=${before}&count=5`
+      `${API_URL}/replies?parent_id=${parent_id}`
     );
     return response.data;
   }
 
   @handleTooManyRequests(REQUEST_TIMEOUT)
   @handleNetworkError(MAX_RETRIES)
-  async makePost(post) {
+  async makeReply(reply) {
     const request = {
       method: "put",
       maxBodyLength: Infinity,
-      url: `${API_URL}/posts`,
+      url: `${API_URL}/replies`,
       headers: {
         "Content-Type": "application/json",
       },
-      data: JSON.stringify(post),
+      data: JSON.stringify(reply),
     };
     const response = await axios(request);
     return response.data;
@@ -46,12 +38,12 @@ class PostsAPI {
 
   @handleTooManyRequests(REQUEST_TIMEOUT)
   @handleNetworkError(MAX_RETRIES)
-  async changePostsVotes(id, voteCount) {
+  async changeReplyVotes(id, voteCount) {
     const obj = { votes: voteCount };
     const request = {
       method: "patch",
       maxBodyLength: Infinity,
-      url: `${API_URL}/posts?id=${id}`,
+      url: `${API_URL}/replies?id=${id}`,
       headers: {
         "Content-Type": "application/json",
       },
@@ -62,4 +54,4 @@ class PostsAPI {
   }
 }
 
-export default new PostsAPI();
+export default new RepliesAPI();

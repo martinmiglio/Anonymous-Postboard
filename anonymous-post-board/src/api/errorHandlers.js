@@ -8,7 +8,10 @@ export function handleTooManyRequests(timeout) {
       try {
         return await originalMethod.apply(this, args);
       } catch (error) {
-        if (error.response && error.response.status === 429) {
+        if (
+          error.response &&
+          (error.response.status === 429 || error.code === 503)
+        ) {
           // Too many requests error
           console.warn("Too many requests, retrying after timeout...");
           await new Promise((resolve) => setTimeout(resolve, timeout));
