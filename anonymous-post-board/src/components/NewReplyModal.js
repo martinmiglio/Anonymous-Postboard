@@ -1,11 +1,17 @@
 import React, { useState } from "react";
+import RepliesAPI from "@/api/replies";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faTimes } from "@fortawesome/free-solid-svg-icons";
-import PostsAPI from "@/api/posts.js";
 import Filter from "bad-words";
 import Graphemer from "graphemer";
 
-const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
+const NewReplyModal = ({
+  parentPost,
+  isOpen,
+  onClose,
+  parentReplies,
+  setParentReplies,
+}) => {
   const defaultContent = "What's on your mind?";
   const maxContentLength = 280;
 
@@ -31,9 +37,17 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
       }, 500);
       return;
     }
-    const post = { content: filter.clean(content) };
-    PostsAPI.makePost(post).then((post) => {
-      setNewPostID(post.id);
+    const reply = {
+      content: filter.clean(content),
+      parent_id: parentPost.id,
+      votes: 0,
+      id: 0,
+    };
+    RepliesAPI.makeReply(reply).then(() => {
+      setParentReplies([...parentReplies, reply]);
+      RepliesAPI.getRepliesByParentId(parentPost.id).then((newReplies) => {
+        setParentReplies(newReplies);
+      });
     });
     onClose();
     setContent("");
@@ -53,19 +67,14 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
   };
 
   const modalStyle = {
-    position: "fixed",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: "80%",
-    maxWidth: "600px",
+    marginTop: "1rem",
     padding: "1rem",
-    zIndex: 1000,
+    zIndex: 900,
     borderRadius: "16px",
     background: "black",
     borderStyle: "solid",
     borderWidth: "1px",
-    borderColor: "white",
+    borderColor: "grey",
   };
 
   const textBoxStyle = {
@@ -150,7 +159,7 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
             onBlur={handleBlur}
             style={textBoxStyle}
             spellCheck="true"
-            rows="3"
+            rows="2"
           />
           <p style={contentLengthStyle}>
             {contentLenght}/{maxContentLength}
@@ -161,4 +170,4 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
   );
 };
 
-export default NewPostModal;
+export default NewReplyModal;

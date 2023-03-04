@@ -1,24 +1,33 @@
 import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
-
 import { formatDistanceToNow } from "date-fns";
-
+import RepliesAPI from "@/api/replies.js";
 const Vote = dynamic(() => import("./Vote"));
 
 const Reply = ({ reply }) => {
-  const [votes, setVotes] = useState(reply.votes);
+  const [firstLoad, setFirstLoad] = useState(true);
+  const [votes, setVotes] = useState(Number(reply.votes));
   const [voteStatus, setVoteStatus] = useState(
     localStorage.getItem(`r-${reply.id}`)
   );
 
   useEffect(() => {
-    // this function is called when the votes state changes
-    console.log(`Updated reply ${reply.id} vote count to ${votes}`);
-    // TODO: add a function to update the vote count in the database
+    // don't update votes on first load
+    if (firstLoad) {
+      setFirstLoad(false);
+      return;
+    }
+    RepliesAPI.changeReplyVotes(reply.id, votes).then((res) => {
+      console.log(`Updated reply ${reply.id} vote count to ${votes}`);
+    });
   }, [votes, reply.id]);
 
   useEffect(() => {
-    localStorage.setItem(`r-${reply.id}`, voteStatus);
+    if (voteStatus === undefined) {
+      localStorage.removeItem(`r-${reply.id}`);
+    } else {
+      localStorage.setItem(`r-${reply.id}`, voteStatus);
+    }
   }, [voteStatus, reply.id]);
 
   const handleUpvote = () => {
