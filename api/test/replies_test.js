@@ -5,7 +5,7 @@ const expect = require("chai").expect;
 
 const url = "https://api.postboard.martinmiglio.dev";
 
-const timeout = 5000;
+const timeout = 6000;
 
 describe("Reply API", () => {
   let workingParentPostId = null; // this is the id of the post that is created for testing purposes and is deleted at the end of the tests
@@ -129,7 +129,7 @@ describe("Reply API", () => {
   // delete a parent post
   describe("Delete the parent post", () => {
     it("should delete the parent post", (done) => {
-      axios.delete(`${url}/posts?id=${workingPostId}`).then((response) => {
+      axios.delete(`${url}/posts?id=${workingParentPostId}`).then((response) => {
         expect(response.status).to.equal(200);
         expect(response.data).to.have.property("success");
         expect(response.data.success).to.equal(true);
