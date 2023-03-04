@@ -41,7 +41,7 @@ function Post({ post }) {
     PostsAPI.changePostsVotes(post.id, votes).then((res) => {
       console.log(`Updated post ${res.id} vote count to ${res.votes} `);
     });
-  }, [votes, firstLoad, post.id]);
+  }, [votes, post.id]);
 
   useEffect(() => {
     // if status is undefined, remove the item from localStorage
