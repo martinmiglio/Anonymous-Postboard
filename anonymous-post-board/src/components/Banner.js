@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSync, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { faSync, faCommentDots } from "@fortawesome/free-solid-svg-icons";
 
 const Banner = ({ onRefresh, onNewPost }) => {
   const animationDuration = 200;
@@ -52,30 +52,6 @@ const Banner = ({ onRefresh, onNewPost }) => {
     >
       <h1>Anonymous Post Board</h1>
       <div style={{ width: "fit-content" }}>
-        {onNewPost ? (
-          <button
-            aria-label="new post"
-            id="newPostButton"
-            onClick={handleNewPost}
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              outline: "none",
-              padding: "8px",
-            }}
-          >
-            <FontAwesomeIcon
-              icon={faPlusCircle}
-              style={{
-                ...iconStyle,
-                "--fa-beat-scale": "0.9",
-                "--fa-animation-duration": `${animationDuration}ms`,
-              }}
-              beat={newPostAnimation}
-            />
-          </button>
-        ) : null}
         {onRefresh ? (
           <button
             aria-label="refresh"
@@ -90,6 +66,30 @@ const Banner = ({ onRefresh, onNewPost }) => {
             }}
           >
             <FontAwesomeIcon icon={faSync} style={iconStyle} spin={loading} />
+          </button>
+        ) : null}
+        {onNewPost ? (
+          <button
+            aria-label="new post"
+            id="newPostButton"
+            onClick={handleNewPost}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              outline: "none",
+              padding: "8px",
+            }}
+          >
+            <FontAwesomeIcon
+              icon={faCommentDots}
+              style={{
+                ...iconStyle,
+                "--fa-beat-scale": "0.9",
+                "--fa-animation-duration": `${animationDuration}ms`,
+              }}
+              beat={newPostAnimation}
+            />
           </button>
         ) : null}
       </div>

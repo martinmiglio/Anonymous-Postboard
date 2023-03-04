@@ -3,6 +3,8 @@ import dynamic from "next/dynamic";
 import PostsAPI from "@/api/posts.js";
 import RepliesAPI from "@/api/replies";
 import { formatDistanceToNow } from "date-fns";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faReply } from "@fortawesome/free-solid-svg-icons";
 
 const Vote = dynamic(() => import("./Vote"));
 const ReplyList = dynamic(() => import("./ReplyList"));
@@ -38,9 +40,7 @@ function Post({ post }) {
       setFirstLoad(false);
       return;
     }
-    PostsAPI.changePostsVotes(post.id, votes).then((res) => {
-      console.log(`Updated post ${res.id} vote count to ${res.votes} `);
-    });
+    PostsAPI.changePostsVotes(post.id, votes)
   }, [votes, post.id]);
 
   useEffect(() => {
@@ -128,7 +128,7 @@ function Post({ post }) {
                   }}
                   onClick={handleNewReply}
                 >
-                  Reply
+                  <FontAwesomeIcon icon={faReply} /> Reply
                 </button>
               )}
             </div>
