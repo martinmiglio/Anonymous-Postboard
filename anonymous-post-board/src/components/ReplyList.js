@@ -6,6 +6,8 @@ const ReplyList = ({ replies }) => (
   <div
     style={{
       borderLeftStyle: "solid",
+      borderLeftWidth: "1px",
+      borderLeftColor: "hsl(0, 0%, 40%)",
     }}
   >
     {replies.map((reply) => (

@@ -81,12 +81,10 @@ function Post({ post }) {
   return (
     <div
       style={{
-        borderStyle: "solid",
+        borderStyle: "none none solid none",
         borderWidth: "1px",
-        borderColor: "white",
+        borderColor: "grey",
         padding: "10px",
-        margin: "10px 5px 10px 5px",
-        borderRadius: "10px",
         width: "calc(100vw - 20px)",
         maxWidth: "600px",
       }}

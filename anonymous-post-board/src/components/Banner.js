@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSync, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
 const Banner = ({ onRefresh, onNewPost }) => {
+  const animationDuration = 200;
+
   const [loading, setLoading] = useState(false);
+  const [newPostAnimation, setNewPostAnimation] = useState(false);
 
   const handleRefresh = () => {
     setLoading(true);
@@ -11,8 +14,17 @@ const Banner = ({ onRefresh, onNewPost }) => {
   };
 
   const handleNewPost = () => {
+    setNewPostAnimation(true);
     onNewPost();
   };
+
+  useEffect(() => {
+    if (newPostAnimation) {
+      setTimeout(() => {
+        setNewPostAnimation(false);
+      }, animationDuration);
+    }
+  }, [newPostAnimation]);
 
   const iconStyle = {
     color: "white",
@@ -53,7 +65,15 @@ const Banner = ({ onRefresh, onNewPost }) => {
               padding: "8px",
             }}
           >
-            <FontAwesomeIcon icon={faPlusCircle} style={iconStyle} />
+            <FontAwesomeIcon
+              icon={faPlusCircle}
+              style={{
+                ...iconStyle,
+                "--fa-beat-scale": "0.9",
+                "--fa-animation-duration": `${animationDuration}ms`,
+              }}
+              beat={newPostAnimation}
+            />
           </button>
         ) : null}
         {onRefresh ? (

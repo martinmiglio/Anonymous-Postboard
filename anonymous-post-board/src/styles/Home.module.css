@@ -4,8 +4,11 @@
   justify-content: space-between;
   align-items: center;
   min-height: 100vh;
-  max-width: 380px;
+  width: fit-content;
   margin: 0 auto;
+  border-style: none solid;
+  border-width: 1px;
+  border-color: grey;
 }
 
 .content {
