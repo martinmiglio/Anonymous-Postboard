@@ -3,6 +3,8 @@ import dynamic from "next/dynamic";
 import PostsAPI from "@/api/posts.js";
 import RepliesAPI from "@/api/replies";
 import { formatDistanceToNow } from "date-fns";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faReply } from "@fortawesome/free-solid-svg-icons";
 
 const Vote = dynamic(() => import("./Vote"));
 const ReplyList = dynamic(() => import("./ReplyList"));
@@ -128,7 +130,7 @@ function Post({ post }) {
                   }}
                   onClick={handleNewReply}
                 >
-                  Reply
+                  <FontAwesomeIcon icon={faReply} /> Reply
                 </button>
               )}
             </div>
