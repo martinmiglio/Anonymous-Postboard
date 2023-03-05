@@ -97,11 +97,12 @@ async function getReplies(event)
         // Retrieve all replies with the specified parent_id
         const params = {
             TableName: tableName,
-            IndexName: 'parent_id-index',
+            IndexName: 'parent_id-timestamp-index',
             KeyConditionExpression: 'parent_id = :parent_id_val',
             ExpressionAttributeValues: {
                 ':parent_id_val': Number(parent_id)
-            }
+            },
+            ScanIndexForward: true, // Sort in ascending order
         };
 
         try
@@ -109,7 +110,7 @@ async function getReplies(event)
             const result = await dynamo.query(params).promise();
             return {
                 statusCode: 200,
-                body: JSON.stringify(result.Items.sort((a, b) => a.timestamp - b.timestamp)),
+                body: JSON.stringify(result.Items),
             };
         } catch (error)
         {
