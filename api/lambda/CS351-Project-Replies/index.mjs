@@ -167,11 +167,11 @@ async function putReplies(event)
     }
     // Create a new post
     const newReply = {
-        id: Date.now(), // id should be generated to avoid collisions
+        id: Math.floor(Date.now()), // id should be generated to avoid collisions
         parent_id: Number(requestJSON.parent_id),
         content: requestJSON.content ?? "",
-        timestamp: requestJSON.timestamp ?? Date.now(),
-        votes: requestJSON.votes ?? 0,
+        timestamp: Number(requestJSON.timestamp ?? Date.now()),
+        votes: Number(requestJSON.votes ?? 0),
         ttl: Math.floor(Date.now() / 1000) + RETENTION_PERIOD,
     };
     // Add the new post to the database
@@ -227,7 +227,7 @@ async function patchReplies(event)
             parent_id: originalReply.Item.parent_id,
             content: requestJSON.content ?? originalReply.Item.content,
             timestamp: originalReply.Item.timestamp,
-            votes: requestJSON.votes ?? originalReply.Item.votes,
+            votes: Number(requestJSON.votes ?? originalReply.Item.votes),
             ttl: originalReply.Item.ttl,
         };
 
