@@ -30,10 +30,11 @@ export default function Home() {
     refreshData();
   }, [newPostID]);
 
-  async function refreshData() {
+  async function refreshData(callback) {
     PostAPI.getLatestPosts().then((latestPosts) => {
       setPosts(latestPosts);
       setHasMorePosts(true);
+      if (callback) callback();
     });
   }
 
