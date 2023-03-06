@@ -32,7 +32,7 @@ function PostList({ posts, loadMorePosts, hasMorePosts }) {
         }
       >
         {posts.map((post) => (
-          <Post key={post.id} post={post} />
+          <Post key={btoa(encodeURI(JSON.stringify(post)))} post={post} />
         ))}
       </InfiniteScroll>
     </div>

@@ -11,7 +11,7 @@ const ReplyList = ({ replies }) => (
     }}
   >
     {replies.map((reply) => (
-      <Reply key={reply.id} reply={reply} />
+      <Reply key={btoa(encodeURI(JSON.stringify(reply)))} reply={reply} />
     ))}
   </div>
 );
