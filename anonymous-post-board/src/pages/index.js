@@ -22,16 +22,15 @@ export default function Home() {
     if (localStorage.getItem("firstVisit") === null) {
       setShowFirstVisitModal(true);
     }
-    fetchData();
+    refreshData();
   }, []);
 
   useEffect(() => {
     if (newPostID === -1) return;
-    fetchData();
+    refreshData();
   }, [newPostID]);
 
-  async function fetchData() {
-    setPosts([]);
+  async function refreshData() {
     PostAPI.getLatestPosts().then((latestPosts) => {
       setPosts(latestPosts);
       setHasMorePosts(true);
@@ -66,8 +65,12 @@ export default function Home() {
 
   return (
     <div className={styles.centerpane}>
-      <Banner onRefresh={fetchData} onNewPost={handleNewPost} />
-      <MorePostsModal interval={"10000"} posts={posts} onRefresh={fetchData} />
+      <Banner onRefresh={refreshData} onNewPost={handleNewPost} />
+      <MorePostsModal
+        interval={"10000"} // ms
+        posts={posts}
+        onRefresh={refreshData}
+      />
       <NewPostModal
         isOpen={showNewPostModal}
         onClose={handleCloseNewPostModal}
