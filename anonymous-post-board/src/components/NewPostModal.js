@@ -43,7 +43,12 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (content === "" || contentLength > maxContentLength) {
+    // Check if content is empty or too long or only whitespace
+    if (
+      contentLength === 0 ||
+      contentLength > maxContentLength ||
+      !content.replace(/\s/g, "").length
+    ) {
       setPostError(true);
       setTimeout(() => {
         setPostError(false);
@@ -51,7 +56,14 @@ const NewPostModal = ({ isOpen, onClose, setNewPostID }) => {
       return;
     }
     setSentPostAnimation(true);
-    const post = { content: filter.clean(content) };
+    let post;
+    try {
+      post = { content: filter.clean(content) };
+    } catch (error) {
+      if (error instanceof TypeError) {
+        post = { content: content };
+      }
+    }
     PostsAPI.makePost(post).then((post) => {
       setNewPostID(post.id);
     });
