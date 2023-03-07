@@ -42,9 +42,20 @@ const MorePostsModal = ({ interval, posts, onRefresh }) => {
     }
   }, [latestPost]);
 
+  // if the latest post is the same as the first post, hide the modal
+  useEffect(() => {
+    if (!posts || !latestPost) return;
+    if (posts[0].id === latestPost.id) {
+      setShow(false);
+    }
+  }, [posts]);
+
   // if the modal is shown, bounce it up and down
   useEffect(() => {
-    if (!show) return;
+    if (!show) {
+      setBounce(false);
+      return;
+    }
     const intervalId = setInterval(() => {
       setTimeout(() => {
         setBounce(true);
@@ -65,20 +76,19 @@ const MorePostsModal = ({ interval, posts, onRefresh }) => {
   };
 
   const modalStyle = {
-    width: "100%",
+    height: "50px",
     position: "fixed",
     zIndex: 9,
-    top: show ? (bounce ? "70px" : "60px") : "-100%",
+    top: show ? (bounce ? "67px" : "60px") : "-50px",
     left: "0",
     right: "0",
     transition: "top 0.5s ease-out",
-    transform: "translateY(0)",
     display: "flex",
     justifyContent: "center",
   };
 
   const contentStyle = {
-    background: "linear-gradient(to bottom, #b3ffb3, #00cc99)",
+    background: "#00cc99",
     borderRadius: "4rem",
     width: "fit-content",
     flexDirection: "column",
