@@ -7,7 +7,7 @@ authors = ["Martin Miglio <marmig0404@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-selenium = "^4.8.2"
+selenium = "^4.8.3"
 ipykernel = "^6.21.3"
 matplotlib = "^3.7.1"
 
